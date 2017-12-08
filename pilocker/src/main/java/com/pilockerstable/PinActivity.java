@@ -29,6 +29,9 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 @SuppressLint({ "SimpleDateFormat", "InlinedApi" })
 public class PinActivity extends Activity {
 
@@ -38,7 +41,7 @@ public class PinActivity extends Activity {
 	Runnable runnable;
 	Window window ;
 
-	Button thelock, no1, no2, no3, no4, no5, no6, no7, no8, no9, no0, back;
+	Button thelock, butt1, butt2, butt3, butt4, butt5, butt6, butt7, butt8, butt9, butt0, back;
 	String unlocker, camera, lock, browser, pin, pkg, sv, img,auto;
 
 	private Handler mainhandler;
@@ -111,114 +114,125 @@ public class PinActivity extends Activity {
 		thelock = (Button) findViewById(R.id.button1);
 		back = (Button) findViewById(R.id.back);
 
-		no1 = (Button) findViewById(R.id.b1);
-		no2 = (Button) findViewById(R.id.b2);
-		no3 = (Button) findViewById(R.id.b3);
-		no4 = (Button) findViewById(R.id.b4);
-		no5 = (Button) findViewById(R.id.b5);
-		no6 = (Button) findViewById(R.id.b6);
-		no7 = (Button) findViewById(R.id.b7);
-		no8 = (Button) findViewById(R.id.b8);
-		no9 = (Button) findViewById(R.id.b9);
-		no0 = (Button) findViewById(R.id.b0);
+		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
+		butt1 = (Button) findViewById(R.id.b1);
+		butt1.setText(String.valueOf(randomNumKey.get(1)));
+		butt2 = (Button) findViewById(R.id.b2);
+		butt2.setText(String.valueOf(randomNumKey.get(2)));
+		butt3 = (Button) findViewById(R.id.b3);
+		butt3.setText(String.valueOf(randomNumKey.get(3)));
+		butt4 = (Button) findViewById(R.id.b4);
+		butt4.setText(String.valueOf(randomNumKey.get(4)));
+		butt5 = (Button) findViewById(R.id.b5);
+		butt5.setText(String.valueOf(randomNumKey.get(5)));
+		butt6 = (Button) findViewById(R.id.b6);
+		butt6.setText(String.valueOf(randomNumKey.get(6)));
+		butt7 = (Button) findViewById(R.id.b7);
+		butt7.setText(String.valueOf(randomNumKey.get(7)));
+		butt8 = (Button) findViewById(R.id.b8);
+		butt8.setText(String.valueOf(randomNumKey.get(8)));
+		butt9 = (Button) findViewById(R.id.b9);
+		butt9.setText(String.valueOf(randomNumKey.get(9)));
+		butt0 = (Button) findViewById(R.id.b0);
+		butt0.setText(String.valueOf(randomNumKey.get(0)));
 
 		
-		no1.setOnClickListener(new OnClickListener() {
+		butt1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("1");
+				unlock.append(butt1.getText());
 
 			}
 		});
 
-		no2.setOnClickListener(new OnClickListener() {
+		butt2.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("2");
+				unlock.append(butt2.getText());
 
 			}
 		});
 
-		no3.setOnClickListener(new OnClickListener() {
+		butt3.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("3");
+				unlock.append(butt3.getText());
 
 			}
 		});
 
-		no4.setOnClickListener(new OnClickListener() {
+		butt4.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("4");
+				unlock.append(butt4.getText());
 
 			}
 		});
 
-		no5.setOnClickListener(new OnClickListener() {
+		butt5.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("5");
+				unlock.append(butt5.getText());
 
 			}
 		});
 
-		no6.setOnClickListener(new OnClickListener() {
+		butt6.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("6");
+				unlock.append(butt6.getText());
 
 			}
 		});
 
-		no7.setOnClickListener(new OnClickListener() {
+		butt7.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("7");
+				unlock.append(butt7.getText());
 
 			}
 		});
 
-		no8.setOnClickListener(new OnClickListener() {
+		butt8.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("8");
+				unlock.append(butt8.getText());
 
 			}
 		});
 
-		no9.setOnClickListener(new OnClickListener() {
+		butt9.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("9");
+				unlock.append(butt9.getText());
 
 			}
 		});
 
-		no0.setOnClickListener(new OnClickListener() {
+		butt0.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append("0");
+				unlock.append(butt0.getText());
 
 			}
 		});
@@ -465,5 +479,16 @@ public class PinActivity extends Activity {
 	public void onCan() {
 		startService(new Intent(PinActivity.this, LockerService.class));
 		finish();
+	}
+
+	public ArrayList<Integer> randomSingleDigitNumbersGenerator(){
+
+		ArrayList<Integer> randomNumbers = new ArrayList<Integer>();
+		for (int i=0; i<10; i++) {
+			randomNumbers.add(new Integer(i));
+		}
+		Collections.shuffle(randomNumbers);
+		return randomNumbers;
+
 	}
 }
