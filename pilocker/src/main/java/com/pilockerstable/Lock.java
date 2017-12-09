@@ -720,7 +720,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 		v2 = (View)findViewById(R.id.v2);
 	}
 
-	// Loads prefrences
+	// Loads shared preferences
 	public void loadlock() {
 
 		sse = PreferenceManager.getDefaultSharedPreferences(this);
@@ -762,7 +762,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 						onCan();
 
-					} else {
+					} else { // if pin is set
 
 						startActivity(new Intent(this, PinActivity.class));
 

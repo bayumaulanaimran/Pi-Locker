@@ -109,11 +109,12 @@ public class PinActivity extends Activity {
 
 	
 
-		unlock = (EditText) findViewById(R.id.pin);
+		unlock = (EditText) findViewById(R.id.pin); // edittext field for pin
 		
-		thelock = (Button) findViewById(R.id.button1);
-		back = (Button) findViewById(R.id.back);
+		thelock = (Button) findViewById(R.id.button1); // confirm button
+		back = (Button) findViewById(R.id.back); // back to lock
 
+		// randomized number buttons
 		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
 		butt1 = (Button) findViewById(R.id.b1);
 		butt1.setText(String.valueOf(randomNumKey.get(1)));
@@ -436,7 +437,7 @@ public class PinActivity extends Activity {
 		}).start();
 		}
 	
-
+	// load shared preferences
 	public void loadlock() {
 
 		sec = PreferenceManager.getDefaultSharedPreferences(this);
@@ -449,6 +450,7 @@ public class PinActivity extends Activity {
 		auto = sec.getString("auto", "");
 	}
 
+	// save value to shared preferences
 	public void save(String key, String value) {
 
 		Editor edit = sec.edit();
@@ -481,6 +483,7 @@ public class PinActivity extends Activity {
 		finish();
 	}
 
+	// make a list of randomized sequence of single digit numbers between the range of 0 <= x <= 9
 	public ArrayList<Integer> randomSingleDigitNumbersGenerator(){
 
 		ArrayList<Integer> randomNumbers = new ArrayList<Integer>();
