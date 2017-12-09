@@ -116,30 +116,20 @@ public class PinActivity extends Activity {
 		thelock = (Button) findViewById(R.id.button1); // confirm button
 		back = (Button) findViewById(R.id.back); // back to lock
 
-		// randomized number buttons
-		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
 		butt1 = (Button) findViewById(R.id.b1);
-		butt1.setText(String.valueOf(randomNumKey.get(1)));
 		butt2 = (Button) findViewById(R.id.b2);
-		butt2.setText(String.valueOf(randomNumKey.get(2)));
 		butt3 = (Button) findViewById(R.id.b3);
-		butt3.setText(String.valueOf(randomNumKey.get(3)));
 		butt4 = (Button) findViewById(R.id.b4);
-		butt4.setText(String.valueOf(randomNumKey.get(4)));
 		butt5 = (Button) findViewById(R.id.b5);
-		butt5.setText(String.valueOf(randomNumKey.get(5)));
 		butt6 = (Button) findViewById(R.id.b6);
-		butt6.setText(String.valueOf(randomNumKey.get(6)));
 		butt7 = (Button) findViewById(R.id.b7);
-		butt7.setText(String.valueOf(randomNumKey.get(7)));
 		butt8 = (Button) findViewById(R.id.b8);
-		butt8.setText(String.valueOf(randomNumKey.get(8)));
 		butt9 = (Button) findViewById(R.id.b9);
-		butt9.setText(String.valueOf(randomNumKey.get(9)));
 		butt0 = (Button) findViewById(R.id.b0);
-		butt0.setText(String.valueOf(randomNumKey.get(0)));
 
-		
+		// randomized number buttons
+		randomizeNumKey();
+
 		butt1.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -147,18 +137,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt1.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -170,18 +149,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt2.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -193,18 +161,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt3.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -216,18 +173,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt4.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -239,18 +185,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt5.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -262,18 +197,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt6.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -285,18 +209,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt7.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -308,18 +221,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt8.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 			}
 		});
@@ -331,19 +233,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt9.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
-
+				randomizeNumKey();
 			}
 		});
 
@@ -354,19 +244,7 @@ public class PinActivity extends Activity {
 
 				unlock.append(butt0.getText());
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
-
+				randomizeNumKey();
 			}
 		});
 
@@ -382,18 +260,7 @@ public class PinActivity extends Activity {
 					lock = lock.substring(0, lock.length() - 1);
 					unlock.setText(lock);
 
-					// randomized number buttons
-					ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-					butt1.setText(String.valueOf(randomNumKey.get(1)));
-					butt2.setText(String.valueOf(randomNumKey.get(2)));
-					butt3.setText(String.valueOf(randomNumKey.get(3)));
-					butt4.setText(String.valueOf(randomNumKey.get(4)));
-					butt5.setText(String.valueOf(randomNumKey.get(5)));
-					butt6.setText(String.valueOf(randomNumKey.get(6)));
-					butt7.setText(String.valueOf(randomNumKey.get(7)));
-					butt8.setText(String.valueOf(randomNumKey.get(8)));
-					butt9.setText(String.valueOf(randomNumKey.get(9)));
-					butt0.setText(String.valueOf(randomNumKey.get(0)));
+					randomizeNumKey();
 
 				} catch(Exception e){
 					
@@ -411,18 +278,7 @@ public class PinActivity extends Activity {
 
 				unlock.setText("");
 
-				// randomized number buttons
-				ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-				butt1.setText(String.valueOf(randomNumKey.get(1)));
-				butt2.setText(String.valueOf(randomNumKey.get(2)));
-				butt3.setText(String.valueOf(randomNumKey.get(3)));
-				butt4.setText(String.valueOf(randomNumKey.get(4)));
-				butt5.setText(String.valueOf(randomNumKey.get(5)));
-				butt6.setText(String.valueOf(randomNumKey.get(6)));
-				butt7.setText(String.valueOf(randomNumKey.get(7)));
-				butt8.setText(String.valueOf(randomNumKey.get(8)));
-				butt9.setText(String.valueOf(randomNumKey.get(9)));
-				butt0.setText(String.valueOf(randomNumKey.get(0)));
+				randomizeNumKey();
 
 				return false;
 			}
@@ -666,5 +522,20 @@ public class PinActivity extends Activity {
 		Collections.shuffle(randomNumbers);
 		return randomNumbers;
 
+	}
+	
+	// randomize number on buttons
+	public void randomizeNumKey(){
+		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
+		butt1.setText(String.valueOf(randomNumKey.get(1)));
+		butt2.setText(String.valueOf(randomNumKey.get(2)));
+		butt3.setText(String.valueOf(randomNumKey.get(3)));
+		butt4.setText(String.valueOf(randomNumKey.get(4)));
+		butt5.setText(String.valueOf(randomNumKey.get(5)));
+		butt6.setText(String.valueOf(randomNumKey.get(6)));
+		butt7.setText(String.valueOf(randomNumKey.get(7)));
+		butt8.setText(String.valueOf(randomNumKey.get(8)));
+		butt9.setText(String.valueOf(randomNumKey.get(9)));
+		butt0.setText(String.valueOf(randomNumKey.get(0)));
 	}
 }
