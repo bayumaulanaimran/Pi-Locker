@@ -260,6 +260,8 @@ public class PinActivity extends Activity {
 					lock = lock.substring(0, lock.length() - 1);
 					unlock.setText(lock);
 
+					unlock.setSelection(lock.length());
+
 					randomizeNumKey();
 
 				} catch(Exception e){
@@ -523,7 +525,7 @@ public class PinActivity extends Activity {
 		return randomNumbers;
 
 	}
-	
+
 	// randomize number on buttons
 	public void randomizeNumKey(){
 		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();

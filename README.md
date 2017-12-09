@@ -32,7 +32,7 @@ Randomized pin keypad that built to this customized Pi-Locker is expected to min
 
 **Pi locker :**
 
-" The only locscreen that is professional and opensourced, you cannot only [customize the lockscreen], but [fork the code and build your own lockscreen], because you deserve this and we support openness. "
+" The only lockscreen that is professional and opensourced, you cannot only [customize the lockscreen], but [fork the code and build your own lockscreen], because you deserve this and we support openness. "
 
 This customized Pi-Locker is just for experimental study in software engineering to find out how effective the use of a randomized keypad is in reducing the constant smudges on the touch screen and reducing the risk of pin leakage.
 
@@ -60,7 +60,7 @@ This customized Pi-Locker is just for experimental study in software engineering
     
 >>-Emergency unlock
     
->>-Show/Hide statusbar
+>>-Show/Hide status bar
     
 >>-Pin security
     
