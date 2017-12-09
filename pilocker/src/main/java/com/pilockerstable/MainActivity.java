@@ -40,6 +40,8 @@ import com.almas.ShortcutSettings;
 
 import eu.janmuller.android.simplecropimage.CropImage;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class MainActivity extends ActionBarActivity {
 
 	/**
@@ -63,11 +65,13 @@ public class MainActivity extends ActionBarActivity {
 	
 	boolean admin;
 	int colors, height, width, size;
+
+	int cost;
 	
 	Context context = this;
 	CheckBox start, secret, skip, DoubleTap, enter, ges_hide, autoy;
 	Button screentext, background, screentextcolor, help, donate, pin, button2, locknow, shortb;
-	String picturePath, load, xx, DD, srt, skips, tap, lock, Pin, Pass, extStorageDirectory, jjk,auto;
+	String picturePath, load, xx, DD, srt, skips, tap, lock, Pin, Pass, extStorageDirectory, jjk,auto, hashedPin;
 	FileOutputStream out;
 	EditText input1;
 	DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -178,6 +182,8 @@ public class MainActivity extends ActionBarActivity {
 				input1 = new EditText(context);
 				final String getPas = getString("pass");
 
+				cost = getOptimalBcryptCostParameter(250);
+
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
 				alert.setMessage("Please write here\n\nYou should only write numbers 0-9.");
@@ -220,6 +226,8 @@ public class MainActivity extends ActionBarActivity {
 
 											save("pass", "");
 											save("pin", p);
+
+											save("hashedpin",BCrypt.hashpw(p, BCrypt.gensalt(cost))); //hashed pin
 
 											Toast.makeText(context, "Pincode Updated", Toast.LENGTH_SHORT).show();
 
@@ -276,6 +284,7 @@ public class MainActivity extends ActionBarActivity {
 									public void onClick(DialogInterface dialog, int which) {
 
 										save("pin", "");
+										save("hashedpin", "");
 										skip.setEnabled(false);
 										autoy.setEnabled(false);
 
@@ -586,6 +595,8 @@ public class MainActivity extends ActionBarActivity {
 		Pin = spf.getString("pin", "");
 	    auto = spf.getString("auto", "");
 
+		hashedPin = spf.getString("hashedpin", "");
+
 		
 		if (Pass.equals("") && Pin.equals("")) {
 
@@ -805,6 +816,19 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 
 	}
-	
+
+	public int getOptimalBcryptCostParameter(long min_ms) {
+		int c=10;
+		for (int i = 5; i < 31; i++) {
+			long time_start = System.currentTimeMillis();
+			BCrypt.hashpw("test",BCrypt.gensalt(i));
+			long time_end = System.currentTimeMillis();
+			if ((time_end - time_start) * 1000 > min_ms) {
+				c=i;
+				break;
+			}
+		}
+		return c;
+	}
 
 }

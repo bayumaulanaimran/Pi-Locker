@@ -29,6 +29,8 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -42,7 +44,7 @@ public class PinActivity extends Activity {
 	Window window ;
 
 	Button thelock, butt1, butt2, butt3, butt4, butt5, butt6, butt7, butt8, butt9, butt0, back;
-	String unlocker, camera, lock, browser, pin, pkg, sv, img,auto;
+	String unlocker, camera, lock, browser, pin, pkg, sv, img,auto, hashedPin;
 
 	private Handler mainhandler;
 	private HomeKeyLocker mHomeKeyLocker;
@@ -279,7 +281,7 @@ public class PinActivity extends Activity {
 				unlocker = unlock.getText().toString();
 
 				
-				if (unlocker.equals(pin) && auto.equals("true")) {
+				if (BCrypt.checkpw(unlocker,hashedPin) && auto.equals("true")) {
 
 					if (unlocker.equals(pin)) {
 						onCan();
@@ -353,7 +355,7 @@ public class PinActivity extends Activity {
 
 				unlocker = unlock.getText().toString();
 
-				if (unlocker.equals(pin)) {
+				if (BCrypt.checkpw(unlocker,hashedPin)) {
 
 					if (unlocker.equals(pin)) {
 						onCan();
@@ -448,6 +450,8 @@ public class PinActivity extends Activity {
 		camera = sec.getString("camera", "");
 		lock = sec.getString("lock", "");
 		auto = sec.getString("auto", "");
+
+		hashedPin = sec.getString("hashedpin", "");
 	}
 
 	// save value to shared preferences
