@@ -50,7 +50,7 @@ This customized Pi-Locker is just for experimental study in software engineering
     
 >>-Customizable text color
     
->>-Battery percent
+>>-Battery percentage
     
 >>-Lockscreen Gestures
     
@@ -58,7 +58,7 @@ This customized Pi-Locker is just for experimental study in software engineering
     
 >>-Changeable background color
     
->>-Emergengy unlock
+>>-Emergency unlock
     
 >>-Show/Hide statusbar
     
