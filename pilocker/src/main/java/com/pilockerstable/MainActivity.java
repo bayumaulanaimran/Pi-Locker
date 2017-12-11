@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 	Button screentext, background, screentextcolor, help, donate, pin, button2, locknow, shortb;
 	String picturePath, load, xx, DD, srt, skips, tap, lock, Pin, Pass, extStorageDirectory, jjk,auto, hashedPin;
 	FileOutputStream out;
-	EditText input1;
+	EditText input1,inputpin;
 	DisplayMetrics displaymetrics = new DisplayMetrics();
 	Uri selectedImage;
 	Cursor cursor;
@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 		
-		
+
 		for (int i = 0; i < 4; i++) {
 
 			String s = Settings.System.getString(context.getContentResolver(), "PiSC" + i);
@@ -179,24 +179,27 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				input1 = new EditText(context);
+				inputpin = new EditText(context);
+
+				inputpin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+
 				final String getPas = getString("pass");
 
 				cost = getOptimalBcryptCostParameter(250);
 
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
-				alert.setMessage("Please write here\n\nYou should only write numbers 0-9.");
+				alert.setMessage("4 - 12 digits");
 				alert.setTitle("Enter New Pin");
 				
 
 
-				alert.setView(input1);
+				alert.setView(inputpin);
 				alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 
 							public void onClick(DialogInterface dialog, int whichButton) {
 								
-								String p = input1.getEditableText().toString();
+								String p = inputpin.getEditableText().toString();
 								
 								if (p.contains("a") || p.contains("b")
 										|| p.contains("c") || p.contains("d")
