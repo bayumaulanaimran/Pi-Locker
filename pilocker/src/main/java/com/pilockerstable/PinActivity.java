@@ -43,7 +43,8 @@ public class PinActivity extends Activity {
 	Runnable runnable;
 	Window window ;
 
-	Button thelock, butt1, butt2, butt3, butt4, butt5, butt6, butt7, butt8, butt9, butt0, back;
+	ArrayList<Button> buttonList;
+	Button thelock, back;
 	String unlocker, camera, lock, browser, pin, pkg, sv, img,auto, hashedPin;
 
 	private Handler mainhandler;
@@ -64,8 +65,7 @@ public class PinActivity extends Activity {
 		stopService(new Intent(PinActivity.this, LockerService.class));
 		
 		loadlock();
-		
-		
+
 	    window = getWindow();
 	    window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 	    window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -100,162 +100,188 @@ public class PinActivity extends Activity {
 
 		View view = new customViewGroup(this);
 		wmanager.addView(view, localLayoutParams);
-	    
-	    
-	    
-	    
-	    
 
 		setContentView(R.layout.pin);
 
-
-	
+		buttonList = new ArrayList<Button>(10);
 
 		unlock = (EditText) findViewById(R.id.pin); // edittext field for pin
 		
 		thelock = (Button) findViewById(R.id.button1); // confirm button
 		back = (Button) findViewById(R.id.back); // back to lock
 
-		butt1 = (Button) findViewById(R.id.b1);
-		butt2 = (Button) findViewById(R.id.b2);
-		butt3 = (Button) findViewById(R.id.b3);
-		butt4 = (Button) findViewById(R.id.b4);
-		butt5 = (Button) findViewById(R.id.b5);
-		butt6 = (Button) findViewById(R.id.b6);
-		butt7 = (Button) findViewById(R.id.b7);
-		butt8 = (Button) findViewById(R.id.b8);
-		butt9 = (Button) findViewById(R.id.b9);
-		butt0 = (Button) findViewById(R.id.b0);
+		buttonList.add((Button)findViewById(R.id.b0));
+		buttonList.add((Button)findViewById(R.id.b1));
+		buttonList.add((Button)findViewById(R.id.b2));
+		buttonList.add((Button)findViewById(R.id.b3));
+		buttonList.add((Button)findViewById(R.id.b4));
+		buttonList.add((Button)findViewById(R.id.b5));
+		buttonList.add((Button)findViewById(R.id.b6));
+		buttonList.add((Button)findViewById(R.id.b7));
+		buttonList.add((Button)findViewById(R.id.b8));
+		buttonList.add((Button)findViewById(R.id.b9));
+
+		mainhandler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+
+				Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+				sendBroadcast(closeDialog);
+
+			}
+		};
+
+		new Thread(new Runnable() {
+			public void run() {
+
+				while (true) {
+					try {
+
+						Thread.sleep(1000);
+						mainhandler.sendEmptyMessage(0);
+
+					} catch (InterruptedException e) {
+
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+		}).start();
 
 		// randomized number buttons
 		randomizeNumKey();
 
-		butt1.setOnClickListener(new OnClickListener() {
+		buttonList.get(0).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt1.getText());
+				unlock.append(buttonList.get(0).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt2.setOnClickListener(new OnClickListener() {
+		buttonList.get(1).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt2.getText());
+				unlock.append(buttonList.get(1).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt3.setOnClickListener(new OnClickListener() {
+		buttonList.get(2).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt3.getText());
+				unlock.append(buttonList.get(2).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt4.setOnClickListener(new OnClickListener() {
+		buttonList.get(3).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt4.getText());
+				unlock.append(buttonList.get(3).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt5.setOnClickListener(new OnClickListener() {
+		buttonList.get(4).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt5.getText());
+				unlock.append(buttonList.get(4).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt6.setOnClickListener(new OnClickListener() {
+		buttonList.get(5).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt6.getText());
+				unlock.append(buttonList.get(5).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt7.setOnClickListener(new OnClickListener() {
+		buttonList.get(6).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt7.getText());
+				unlock.append(buttonList.get(6).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt8.setOnClickListener(new OnClickListener() {
+		buttonList.get(7).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt8.getText());
+				unlock.append(buttonList.get(7).getText());
 
 				randomizeNumKey();
 
 			}
 		});
 
-		butt9.setOnClickListener(new OnClickListener() {
+		buttonList.get(8).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt9.getText());
+				unlock.append(buttonList.get(8).getText());
 
 				randomizeNumKey();
+
 			}
 		});
 
-		butt0.setOnClickListener(new OnClickListener() {
+		buttonList.get(9).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				unlock.append(butt0.getText());
+				unlock.append(buttonList.get(9).getText());
 
 				randomizeNumKey();
+
 			}
 		});
 
-		
 		back.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
 				try{
-					
+
 					String lock = unlock.getText().toString();
 					lock = lock.substring(0, lock.length() - 1);
 					unlock.setText(lock);
@@ -265,16 +291,16 @@ public class PinActivity extends Activity {
 					randomizeNumKey();
 
 				} catch(Exception e){
-					
-				    e.printStackTrace();
-					
+
+					e.printStackTrace();
+
 				}
-			}		
+			}
 		});
-		
-		
+
+
 		back.setOnLongClickListener(new OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 
@@ -286,15 +312,14 @@ public class PinActivity extends Activity {
 			}
 		});
 
-		
+
 		unlock.addTextChangedListener(new TextWatcher() {
-			
+
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				
+
 				unlocker = unlock.getText().toString();
 
-				
 				if (BCrypt.checkpw(unlocker,hashedPin) && auto.equals("true")) {
 
 					if (unlocker.equals(pin)) {
@@ -321,11 +346,11 @@ public class PinActivity extends Activity {
 
 					} else if (unlocker.equals(pin) && pkg.equals("true")) {
 
-					
+
 						Intent i = new Intent();
 						i.setClass(getBaseContext(), LockerService.class);
 						startService(i);
-						
+
 						sv = getIntent().getStringExtra("sv");
 						Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(sv);
 						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -335,31 +360,28 @@ public class PinActivity extends Activity {
 
 					}
 				}
-				
+
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
-				
-				
+
+
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 
 			}
 		});
-		
-		
-		
+
 		if(hasBackKey & hasHomeKey){
-			
-		mHomeKeyLocker = new HomeKeyLocker();
-		mHomeKeyLocker.lock(this);
+
+			mHomeKeyLocker = new HomeKeyLocker();
+			mHomeKeyLocker.lock(this);
 
 		}
-		
-		
+
 		unlock.setFilters(new InputFilter[] { new InputFilter.LengthFilter(12) });
 
 		thelock.setOnClickListener(new OnClickListener() {
@@ -416,55 +438,14 @@ public class PinActivity extends Activity {
 					unlock.setText("");
 
 					// randomized number buttons
-					ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-					butt1.setText(String.valueOf(randomNumKey.get(1)));
-					butt2.setText(String.valueOf(randomNumKey.get(2)));
-					butt3.setText(String.valueOf(randomNumKey.get(3)));
-					butt4.setText(String.valueOf(randomNumKey.get(4)));
-					butt5.setText(String.valueOf(randomNumKey.get(5)));
-					butt6.setText(String.valueOf(randomNumKey.get(6)));
-					butt7.setText(String.valueOf(randomNumKey.get(7)));
-					butt8.setText(String.valueOf(randomNumKey.get(8)));
-					butt9.setText(String.valueOf(randomNumKey.get(9)));
-					butt0.setText(String.valueOf(randomNumKey.get(0)));
+					randomizeNumKey();
 
 				}
 
 			}
 
 		});
-
-		mainhandler = new Handler() {
-
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-
-				Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-				sendBroadcast(closeDialog);
-
-			}
-		};
-
-		new Thread(new Runnable() {
-			public void run() {
-
-				while (true) {
-					try {
-
-						Thread.sleep(1000);
-						mainhandler.sendEmptyMessage(0);
-
-					} catch (InterruptedException e) {
-
-						e.printStackTrace();
-					}
-
-				}
-
-			}
-		}).start();
-		}
+	}
 	
 	// load shared preferences
 	public void loadlock() {
@@ -529,15 +510,16 @@ public class PinActivity extends Activity {
 	// randomize number on buttons
 	public void randomizeNumKey(){
 		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-		butt1.setText(String.valueOf(randomNumKey.get(1)));
-		butt2.setText(String.valueOf(randomNumKey.get(2)));
-		butt3.setText(String.valueOf(randomNumKey.get(3)));
-		butt4.setText(String.valueOf(randomNumKey.get(4)));
-		butt5.setText(String.valueOf(randomNumKey.get(5)));
-		butt6.setText(String.valueOf(randomNumKey.get(6)));
-		butt7.setText(String.valueOf(randomNumKey.get(7)));
-		butt8.setText(String.valueOf(randomNumKey.get(8)));
-		butt9.setText(String.valueOf(randomNumKey.get(9)));
-		butt0.setText(String.valueOf(randomNumKey.get(0)));
+		buttonList.get(0).setText(String.valueOf(randomNumKey.get(0)));
+		buttonList.get(1).setText(String.valueOf(randomNumKey.get(1)));
+		buttonList.get(2).setText(String.valueOf(randomNumKey.get(2)));
+		buttonList.get(3).setText(String.valueOf(randomNumKey.get(3)));
+		buttonList.get(4).setText(String.valueOf(randomNumKey.get(4)));
+		buttonList.get(5).setText(String.valueOf(randomNumKey.get(5)));
+		buttonList.get(6).setText(String.valueOf(randomNumKey.get(6)));
+		buttonList.get(7).setText(String.valueOf(randomNumKey.get(7)));
+		buttonList.get(8).setText(String.valueOf(randomNumKey.get(8)));
+		buttonList.get(9).setText(String.valueOf(randomNumKey.get(9)));
 	}
+
 }
