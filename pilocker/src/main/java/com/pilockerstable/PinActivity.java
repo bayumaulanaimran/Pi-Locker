@@ -13,19 +13,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -33,19 +29,22 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 @SuppressLint({ "SimpleDateFormat", "InlinedApi" })
 public class PinActivity extends Activity {
 
 	SharedPreferences sec;
 	
-	EditText unlock;
 	Runnable runnable;
 	Window window ;
 
 	ArrayList<Button> buttonList;
-	Button thelock, back;
+	ArrayList<Boolean> boolList;
+	Random rand;
+	Button thelock, randomize;
 	String unlocker, camera, lock, browser, pin, pkg, sv, img,auto, hashedPin;
+	StringBuilder sb;
 
 	private Handler mainhandler;
 	private HomeKeyLocker mHomeKeyLocker;
@@ -103,14 +102,11 @@ public class PinActivity extends Activity {
 
 		setContentView(R.layout.pin);
 
-		buttonList = new ArrayList<Button>(10);
+		buttonList = new ArrayList<Button>(9);
 
-		unlock = (EditText) findViewById(R.id.pin); // edittext field for pin
-		
 		thelock = (Button) findViewById(R.id.button1); // confirm button
-		back = (Button) findViewById(R.id.back); // back to lock
+		randomize = (Button) findViewById(R.id.back); // back to lock
 
-		buttonList.add((Button)findViewById(R.id.b0));
 		buttonList.add((Button)findViewById(R.id.b1));
 		buttonList.add((Button)findViewById(R.id.b2));
 		buttonList.add((Button)findViewById(R.id.b3));
@@ -120,6 +116,24 @@ public class PinActivity extends Activity {
 		buttonList.add((Button)findViewById(R.id.b7));
 		buttonList.add((Button)findViewById(R.id.b8));
 		buttonList.add((Button)findViewById(R.id.b9));
+
+		boolList = new ArrayList<Boolean>(9);
+
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+		boolList.add(false);
+
+		rand = new Random();
+
+		randomize();
+
+		onClickInitialize();
 
 		mainhandler = new Handler() {
 
@@ -152,299 +166,157 @@ public class PinActivity extends Activity {
 			}
 		}).start();
 
-		// randomized number buttons
-		randomizeNumKey();
-
-		buttonList.get(0).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(0).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(1).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(1).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(2).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(2).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(3).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(3).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(4).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(4).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(5).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(5).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(6).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(6).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(7).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(7).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(8).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(8).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(9).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(9).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		back.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				try{
-
-					String lock = unlock.getText().toString();
-					lock = lock.substring(0, lock.length() - 1);
-					unlock.setText(lock);
-
-					unlock.setSelection(lock.length());
-
-					randomizeNumKey();
-
-				} catch(Exception e){
-
-					e.printStackTrace();
-
-				}
-			}
-		});
-
-
-		back.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-
-				unlock.setText("");
-
-				randomizeNumKey();
-
-				return false;
-			}
-		});
-
-
-		unlock.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-				unlocker = unlock.getText().toString();
-
-				if (BCrypt.checkpw(unlocker,hashedPin) && auto.equals("true")) {
-
-					if (unlocker.equals(pin)) {
-						onCan();
-
-					} else if (unlocker.equals(pin) && browser.equals("true")) {
-
-						Uri uri = Uri.parse("http://www.google.com");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-
-						save("browser", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && camera.equals("true")) {
-
-						Intent intent = new Intent(
-								"android.media.action.IMAGE_CAPTURE");
-						startActivityForResult(intent, 0);
-						save("camera", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && pkg.equals("true")) {
-
-
-						Intent i = new Intent();
-						i.setClass(getBaseContext(), LockerService.class);
-						startService(i);
-
-						sv = getIntent().getStringExtra("sv");
-						Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(sv);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(LaunchIntent);
-
-						onCan();
-
-					}
-				}
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
-
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
-		});
-
 		if(hasBackKey & hasHomeKey){
 
 			mHomeKeyLocker = new HomeKeyLocker();
 			mHomeKeyLocker.lock(this);
 
 		}
+	}
 
-		unlock.setFilters(new InputFilter[] { new InputFilter.LengthFilter(12) });
-
-		thelock.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlocker = unlock.getText().toString();
-
-				if (BCrypt.checkpw(unlocker,hashedPin)) {
-
-					if (unlocker.equals(pin)) {
-						onCan();
-
-					} else if (unlocker.equals(pin) && browser.equals("true")) {
-
-						Uri uri = Uri.parse("http://www.google.com");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-
-						save("browser", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && camera.equals("true")) {
-
-						Intent intent = new Intent(
-								"android.media.action.IMAGE_CAPTURE");
-						startActivityForResult(intent, 0);
-						save("camera", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && pkg.equals("true")) {
-
-						sv = getIntent().getStringExtra("sv");
-						Intent i = new Intent();
-						i.setClass(getBaseContext(), LockerService.class);
-						startService(i);
-						Intent LaunchIntent = getPackageManager()
-								.getLaunchIntentForPackage(sv);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(LaunchIntent);
-
-						onCan();
-
+	public void onClickInitialize(){
+		for(int index=0;index<9;index++){
+			final int i=index;
+			buttonList.get(i).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dotClicked(i);
+					if(auto.equals("true")){
+						checkDots();
 					}
 				}
+			});
+		}
+		thelock.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				checkDots();
+			}
+		});
+		randomize.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				randomize();
+			}
+		});
+	}
 
-				else {
+	public void checkDots(){
+		if (BCrypt.checkpw(unlocker,hashedPin)) {
 
-					Toast.makeText(getApplicationContext(),
-							"Wrong PIN try again", Toast.LENGTH_SHORT).show();
-					unlock.setText("");
+			if (unlocker.equals(pin)) {
+				onCan();
 
-					// randomized number buttons
-					randomizeNumKey();
+			} else if (unlocker.equals(pin) && browser.equals("true")) {
 
-				}
+				Uri uri = Uri.parse("http://www.google.com");
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+
+				save("browser", "");
+
+				onCan();
+
+			} else if (unlocker.equals(pin) && camera.equals("true")) {
+
+				Intent intent = new Intent(
+						"android.media.action.IMAGE_CAPTURE");
+				startActivityForResult(intent, 0);
+				save("camera", "");
+
+				onCan();
+
+			} else if (unlocker.equals(pin) && pkg.equals("true")) {
+
+				sv = getIntent().getStringExtra("sv");
+				Intent i = new Intent();
+				i.setClass(getBaseContext(), LockerService.class);
+				startService(i);
+				Intent LaunchIntent = getPackageManager()
+						.getLaunchIntentForPackage(sv);
+				LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(LaunchIntent);
+
+				onCan();
 
 			}
+		}else if(auto.equals("true")){
 
-		});
+		}else{
+			Toast.makeText(getApplicationContext(),
+					"Wrong Dots try again", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public boolean sameDots(){
+		if (BCrypt.checkpw(unlocker,hashedPin)) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	// make a list of randomized sequence of single digit numbers between the range of 0 <= x <= 9
+	public void randomBooleanGenerator(){
+
+		boolList = new ArrayList<Boolean>(9);
+		for (int i=0; i<9; i++) {
+			boolList.add(rand.nextBoolean());
+		}
+		Collections.shuffle(boolList);
+
+	}
+
+	// randomize number on buttons
+	public void randomize(){
+		randomBooleanGenerator();
+		updateUnlocker();
+		if(sameDots()){
+			randomize();
+		}
+		updateDots();
+	}
+
+	public void updateDot(int index){
+		if(boolList.get(index)){
+			buttonList.get(index).setBackground(ContextCompat.getDrawable(this,R.drawable.pin2));
+		}else{
+			buttonList.get(index).setBackground(ContextCompat.getDrawable(this,R.drawable.pin1));
+		}
+	}
+
+	public void updateDots(){
+		updateDot(0);
+		updateDot(1);
+		updateDot(2);
+		updateDot(3);
+		updateDot(4);
+		updateDot(5);
+		updateDot(6);
+		updateDot(7);
+		updateDot(8);
+	}
+
+	public void updateUnlocker(){
+		sb = new StringBuilder(9);
+		for (boolean bool:boolList) {
+			if(bool){
+				sb.append(1);
+			}else{
+				sb.append(0);
+			}
+		}
+		unlocker=sb.toString();
+	}
+
+	public void dotClicked(int index){
+		if(boolList.get(index)){
+			boolList.set(index,false);
+		}else{
+			boolList.set(index,true);
+		}
+		updateDot(index);
+		updateUnlocker();
 	}
 	
 	// load shared preferences

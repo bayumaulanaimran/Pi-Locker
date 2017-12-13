@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener;
+
 import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -24,7 +25,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -172,115 +172,25 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		
-		
-		
+
 		pin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 
-				inputpin = new EditText(context);
-
-				inputpin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-
-				final String getPas = getString("pass");
-
 				cost = getOptimalBcryptCostParameter(250);
 
-				AlertDialog.Builder alert = new AlertDialog.Builder(context);
-
-				alert.setMessage("4 - 12 digits");
-				alert.setTitle("Enter New Pin");
-				
-
-
-				alert.setView(inputpin);
-				alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int whichButton) {
-								
-								String p = inputpin.getEditableText().toString();
-								
-								if (p.contains("a") || p.contains("b")
-										|| p.contains("c") || p.contains("d")
-										|| p.contains("e") || p.contains("f")
-										|| p.contains("g") || p.contains("h")
-										|| p.contains("i") || p.contains("j")
-										|| p.contains("k") || p.contains("l")
-										|| p.contains("m") || p.contains("n")
-										|| p.contains("o") || p.contains("p")
-										|| p.contains("r") || p.contains("s")
-										|| p.contains("t") || p.contains("u")
-										|| p.contains("v") || p.contains("w")
-										|| p.contains("q") || p.contains("x")
-										|| p.contains("y") || p.contains("z")) {
-
-									Toast.makeText(context, "The pin only can hold numbers from 0 to 9", Toast.LENGTH_LONG).show();
-
-								} else {
-									
-									if (p.trim().length() < 4) {
-
-										Toast.makeText(context, "Pin Must be atleast 4 Characters, try again", Toast.LENGTH_SHORT).show();
-
-									} else if (p.trim().length() >= 4 && p.trim().length() <= 12) {
-
-						       if (getPas == "") {
-
-											save("pass", "");
-											save("pin", p);
-
-											save("hashedpin",BCrypt.hashpw(p, BCrypt.gensalt(cost))); //hashed pin
-
-											Toast.makeText(context, "Pincode Updated", Toast.LENGTH_SHORT).show();
-
-											skip.setEnabled(true);
-											autoy.setEnabled(true);
-
-											
-										}
-
-						       
-									} else if (p.trim().length() > 12) {
-
-										Toast.makeText(context, "The password must be less than 12 characters", Toast.LENGTH_SHORT).show();
-
-									}
-
-								}
-							}
-
-						});
-
-				
-				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int whichButton) {
-
-								dialog.cancel();
-
-							}
-						});
-				
-
-				AlertDialog alertDialog = alert.create();
-				alertDialog.show();
+				startActivityForResult(new Intent(MainActivity.this, DotChooseActivity.class),9);
 
 			}
 		});
 
-		
-		
-
-		
-		
 		
 		button2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 
 				new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Reset Pin/Password")
+						.setTitle("Reset Dots")
 						.setMessage("Are you sure you want to reset security? \nthis will leave your phone UNSECURED")
 						.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
 
@@ -749,6 +659,16 @@ public class MainActivity extends ActionBarActivity {
 			save("img", mFileTemp.getPath());
 
 			break;
+
+			case 9:
+				save("pass","");
+				save("pin",data.getStringExtra("dots"));
+				save("hashedpin",BCrypt.hashpw(data.getStringExtra("dots"),BCrypt.gensalt(cost)));
+
+				skip.setEnabled(true);
+				autoy.setEnabled(true);
+				Toast.makeText(getApplicationContext(), "Marked Dots saved", Toast.LENGTH_SHORT).show();
+
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -833,5 +753,4 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return c;
 	}
-
 }

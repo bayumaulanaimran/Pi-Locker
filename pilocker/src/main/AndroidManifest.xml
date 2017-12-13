@@ -79,7 +79,16 @@
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-
+        <activity
+            android:name=".DotChooseActivity"
+            android:logo="@drawable/ic_launcher"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_pin"
+            android:theme="@style/Theme.AppCompat" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pilockerstable.MainActivity" />
+        </activity>
         <receiver
             android:name=".LockBoot"
             android:enabled="true" >
