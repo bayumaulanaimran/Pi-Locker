@@ -1,4 +1,4 @@
-Pi-Locker (with Randomized Pin Keypad)
+Pi-Locker (with Randomized Dots Security)
 =========
 
 **A smart and clean lockscreen replacement for android with unlocking gestures**
@@ -18,7 +18,7 @@ Pi-Locker : "There is a punch of lockscreens for android Devices, but only littl
 so we decided to save the world and create this lockscreen replacement.
 This is not a coffee machine or your dishwasher,just an innovative lockscreen project that is still developing."
 
-This customized Pi-Locker has pin keypad with randomized numbers placement. An experimental project that built only for study.
+This customized Pi-Locker has randomized dots security. An experimental project that built only for study.
 
 **About Project :**
 
@@ -28,13 +28,13 @@ Pi Locker is the lowest ram consuming lockscreen ever.
 
 Enjoy Our Experience."
 
-Randomized pin keypad that built to this customized Pi-Locker is expected to minimize fingerprint smudges on the touch screen as a result of constant pressing of pin keys
+Randomized dots security that built to this customized Pi-Locker is expected to minimize fingerprint smudges on the touch screen as a result of touch/press/drag in constant places.
 
 **Pi locker :**
 
 " The only lockscreen that is professional and opensourced, you cannot only [customize the lockscreen], but [fork the code and build your own lockscreen], because you deserve this and we support openness. "
 
-This customized Pi-Locker is just for experimental study in software engineering to find out how effective the use of a randomized keypad is in reducing the constant smudges on the touch screen and reducing the risk of pin leakage.
+This customized Pi-Locker is just for experimental study in software engineering to find out how effective the use of randomized dots security is in reducing the constant smudges on the touch screen and reducing the risk of brute force and smudge attack.
 
 **Pi-Locker features :**
 
@@ -62,7 +62,7 @@ This customized Pi-Locker is just for experimental study in software engineering
     
 >>-Show/Hide status bar
     
->>-Pin security
+>>-Pin security* 
     
 >>-Custom Notification
 
@@ -70,10 +70,10 @@ This customized Pi-Locker is just for experimental study in software engineering
 
 >>-Whatsapp Tick notification
 
-PS : in this customized Pi-Locker, pin security has randomized keypad.
+*in this customized Pi-Locker, pin security has been replaced by randomized dots security.
 
 
-**Pi-Locker was featured on XDA Developers' portal 2 Times and more websites too.**
+**Pi-Locker was featured on XDA Developers' portal 2 Times and more websites.**
 **Pi-Locker original project link :**
 
 >>https://github.com/Pi-Developers/Pi-Locker
