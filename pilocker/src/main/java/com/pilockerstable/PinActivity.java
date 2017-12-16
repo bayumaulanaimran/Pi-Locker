@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
@@ -181,7 +182,7 @@ public class PinActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					dotClicked(i);
-					if(auto.equals("true")){
+					if(auto.equals("true")&&sameDots()){
 						checkDots();
 					}
 				}
@@ -203,6 +204,8 @@ public class PinActivity extends Activity {
 
 	public void checkDots(){
 		if (BCrypt.checkpw(unlocker,hashedPin)) {
+
+			tryUnlock(true);
 
 			if (unlocker.equals(pin)) {
 				onCan();
@@ -240,9 +243,9 @@ public class PinActivity extends Activity {
 				onCan();
 
 			}
-		}else if(auto.equals("true")){
 
 		}else{
+			tryUnlock(false);
 			Toast.makeText(getApplicationContext(),
 					"Wrong Dots try again", Toast.LENGTH_SHORT).show();
 		}
@@ -286,15 +289,9 @@ public class PinActivity extends Activity {
 	}
 
 	public void updateDots(){
-		updateDot(0);
-		updateDot(1);
-		updateDot(2);
-		updateDot(3);
-		updateDot(4);
-		updateDot(5);
-		updateDot(6);
-		updateDot(7);
-		updateDot(8);
+		for (int i=0; i<9; i++){
+			updateDot(i);
+		}
 	}
 
 	public void updateUnlocker(){
@@ -315,7 +312,7 @@ public class PinActivity extends Activity {
 		}else{
 			boolList.set(index,true);
 		}
-		updateDot(index);
+		updateDots();
 		updateUnlocker();
 	}
 	
@@ -379,19 +376,16 @@ public class PinActivity extends Activity {
 
 	}
 
-	// randomize number on buttons
-	public void randomizeNumKey(){
-		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-		buttonList.get(0).setText(String.valueOf(randomNumKey.get(0)));
-		buttonList.get(1).setText(String.valueOf(randomNumKey.get(1)));
-		buttonList.get(2).setText(String.valueOf(randomNumKey.get(2)));
-		buttonList.get(3).setText(String.valueOf(randomNumKey.get(3)));
-		buttonList.get(4).setText(String.valueOf(randomNumKey.get(4)));
-		buttonList.get(5).setText(String.valueOf(randomNumKey.get(5)));
-		buttonList.get(6).setText(String.valueOf(randomNumKey.get(6)));
-		buttonList.get(7).setText(String.valueOf(randomNumKey.get(7)));
-		buttonList.get(8).setText(String.valueOf(randomNumKey.get(8)));
-		buttonList.get(9).setText(String.valueOf(randomNumKey.get(9)));
+	public void tryUnlock(boolean status){
+		if(status){
+			for (int i=0;i<9;i++){
+				buttonList.get(i).getBackground().mutate().setTint(Color.GREEN);
+			}
+		}else{
+			for (int i=0;i<9;i++){
+				buttonList.get(i).getBackground().mutate().setTint(Color.RED);
+			}
+		}
 	}
 
 }
