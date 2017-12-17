@@ -7,12 +7,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -152,229 +156,6 @@ public class PinActivity extends Activity {
 			}
 		}).start();
 
-		// randomized number buttons
-		randomizeNumKey();
-
-		buttonList.get(0).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(0).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(1).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(1).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(2).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(2).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(3).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(3).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(4).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(4).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(5).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(5).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(6).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(6).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(7).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(7).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(8).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(8).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		buttonList.get(9).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				unlock.append(buttonList.get(9).getText());
-
-				randomizeNumKey();
-
-			}
-		});
-
-		back.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				try{
-
-					String lock = unlock.getText().toString();
-					lock = lock.substring(0, lock.length() - 1);
-					unlock.setText(lock);
-
-					unlock.setSelection(lock.length());
-
-					randomizeNumKey();
-
-				} catch(Exception e){
-
-					e.printStackTrace();
-
-				}
-			}
-		});
-
-
-		back.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-
-				unlock.setText("");
-
-				randomizeNumKey();
-
-				return false;
-			}
-		});
-
-
-		unlock.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-				unlocker = unlock.getText().toString();
-
-				if (BCrypt.checkpw(unlocker,hashedPin) && auto.equals("true")) {
-
-					if (unlocker.equals(pin)) {
-						onCan();
-
-					} else if (unlocker.equals(pin) && browser.equals("true")) {
-
-						Uri uri = Uri.parse("http://www.google.com");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-
-						save("browser", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && camera.equals("true")) {
-
-						Intent intent = new Intent(
-								"android.media.action.IMAGE_CAPTURE");
-						startActivityForResult(intent, 0);
-						save("camera", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && pkg.equals("true")) {
-
-
-						Intent i = new Intent();
-						i.setClass(getBaseContext(), LockerService.class);
-						startService(i);
-
-						sv = getIntent().getStringExtra("sv");
-						Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(sv);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(LaunchIntent);
-
-						onCan();
-
-					}
-				}
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
-
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
-		});
-
 		if(hasBackKey & hasHomeKey){
 
 			mHomeKeyLocker = new HomeKeyLocker();
@@ -382,69 +163,12 @@ public class PinActivity extends Activity {
 
 		}
 
-		unlock.setFilters(new InputFilter[] { new InputFilter.LengthFilter(12) });
+		// randomized number buttons
+		randomizeNumKey();
 
-		thelock.setOnClickListener(new OnClickListener() {
+		// initialize onClick() and onTextChanged()
+		initializeOnEventListener();
 
-			@Override
-			public void onClick(View arg0) {
-
-				unlocker = unlock.getText().toString();
-
-				if (BCrypt.checkpw(unlocker,hashedPin)) {
-
-					if (unlocker.equals(pin)) {
-						onCan();
-
-					} else if (unlocker.equals(pin) && browser.equals("true")) {
-
-						Uri uri = Uri.parse("http://www.google.com");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-
-						save("browser", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && camera.equals("true")) {
-
-						Intent intent = new Intent(
-								"android.media.action.IMAGE_CAPTURE");
-						startActivityForResult(intent, 0);
-						save("camera", "");
-
-						onCan();
-
-					} else if (unlocker.equals(pin) && pkg.equals("true")) {
-
-						sv = getIntent().getStringExtra("sv");
-						Intent i = new Intent();
-						i.setClass(getBaseContext(), LockerService.class);
-						startService(i);
-						Intent LaunchIntent = getPackageManager()
-								.getLaunchIntentForPackage(sv);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(LaunchIntent);
-
-						onCan();
-
-					}
-				}
-
-				else {
-
-					Toast.makeText(getApplicationContext(),
-							"Wrong PIN try again", Toast.LENGTH_SHORT).show();
-					unlock.setText("");
-
-					// randomized number buttons
-					randomizeNumKey();
-
-				}
-
-			}
-
-		});
 	}
 	
 	// load shared preferences
@@ -510,16 +234,155 @@ public class PinActivity extends Activity {
 	// randomize number on buttons
 	public void randomizeNumKey(){
 		ArrayList<Integer> randomNumKey = randomSingleDigitNumbersGenerator();
-		buttonList.get(0).setText(String.valueOf(randomNumKey.get(0)));
-		buttonList.get(1).setText(String.valueOf(randomNumKey.get(1)));
-		buttonList.get(2).setText(String.valueOf(randomNumKey.get(2)));
-		buttonList.get(3).setText(String.valueOf(randomNumKey.get(3)));
-		buttonList.get(4).setText(String.valueOf(randomNumKey.get(4)));
-		buttonList.get(5).setText(String.valueOf(randomNumKey.get(5)));
-		buttonList.get(6).setText(String.valueOf(randomNumKey.get(6)));
-		buttonList.get(7).setText(String.valueOf(randomNumKey.get(7)));
-		buttonList.get(8).setText(String.valueOf(randomNumKey.get(8)));
-		buttonList.get(9).setText(String.valueOf(randomNumKey.get(9)));
+		for(int i=0;i<10;i++){
+			buttonList.get(i).setText(String.valueOf(randomNumKey.get(i)));
+		}
+	}
+
+	public void initializeOnEventListener(){
+		for (int index = 0; index<10; index++) {
+			final int i=index;
+			buttonList.get(index).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					unlock.append(buttonList.get(i).getText());
+
+					randomizeNumKey();
+				}
+			});
+		}
+
+		back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				try{
+
+					String lock = unlock.getText().toString();
+					lock = lock.substring(0, lock.length() - 1);
+					unlock.setText(lock);
+
+					unlock.setSelection(lock.length());
+
+					randomizeNumKey();
+
+				} catch(Exception e){
+
+					e.printStackTrace();
+
+				}
+			}
+		});
+
+
+		back.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				unlock.setText("");
+
+				randomizeNumKey();
+
+				return false;
+			}
+		});
+
+
+		unlock.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				unlocker = unlock.getText().toString();
+
+				if (BCrypt.checkpw(unlocker,hashedPin) && auto.equals("true")) {
+
+					unlockScreen();
+
+				}
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+			}
+		});
+
+		unlock.setFilters(new InputFilter[] { new InputFilter.LengthFilter(12) });
+
+		thelock.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				unlocker = unlock.getText().toString();
+
+				if (BCrypt.checkpw(unlocker,hashedPin)) {
+
+					unlockScreen();
+
+				}
+
+				else {
+
+					Toast.makeText(getApplicationContext(),
+							"Wrong PIN try again", Toast.LENGTH_SHORT).show();
+					unlock.setText("");
+
+				}
+
+			}
+
+		});
+	}
+
+	public void unlockScreen(){
+
+		if (unlocker.equals(pin)) {
+			onCan();
+
+		} else if (unlocker.equals(pin) && browser.equals("true")) {
+
+			Uri uri = Uri.parse("http://www.google.com");
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(intent);
+
+			save("browser", "");
+
+			onCan();
+
+		} else if (unlocker.equals(pin) && camera.equals("true")) {
+
+			Intent intent = new Intent(
+					"android.media.action.IMAGE_CAPTURE");
+			startActivityForResult(intent, 0);
+			save("camera", "");
+
+			onCan();
+
+		} else if (unlocker.equals(pin) && pkg.equals("true")) {
+
+			sv = getIntent().getStringExtra("sv");
+			Intent i = new Intent();
+			i.setClass(getBaseContext(), LockerService.class);
+			startService(i);
+			Intent LaunchIntent = getPackageManager()
+					.getLaunchIntentForPackage(sv);
+			LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(LaunchIntent);
+
+			onCan();
+
+		}
 	}
 
 }
