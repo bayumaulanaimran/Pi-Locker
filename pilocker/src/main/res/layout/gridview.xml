@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_gravity="center"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:text="Select Dots"
+        android:textAlignment="gravity"
+        android:layout_gravity="center_horizontal|center_vertical"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutButton"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:columnWidth="60dp"
+            android:numColumns="3"
+            android:stretchMode="none"
+            />
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedselector"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_below="@+id/gridview"
+            android:text="OK"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedselector"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_below="@+id/gridview"
+            android:text="Cancel"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

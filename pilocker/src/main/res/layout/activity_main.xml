@@ -112,7 +112,7 @@
                 android:layout_height="30dp"
                 android:background="#ffffff"
                 android:gravity="fill_vertical"
-                android:text="   Security"
+                android:text="   PIN Security"
                 android:textColor="#00BCD4"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -126,13 +126,60 @@
                 android:text="     Set Pin"
                 android:textColor="#000000" />
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:gravity="fill_vertical"
+                android:text="   Dots Pattern Security"
+                android:textColor="#00BCD4"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonSetDots"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/selector2"
+                android:gravity="center_vertical"
+                android:text="     Set Dots Pattern"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/buttonSetColumns"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/selector2"
+                android:gravity="center_vertical"
+                android:text="     Number of Columns = 3"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/buttonSetRows"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/selector2"
+                android:gravity="center_vertical"
+                android:text="     Number of Rows = 3"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:gravity="fill_vertical"
+                android:text="   Reset Security"
+                android:textColor="#00BCD4"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/selector2"
                 android:gravity="center_vertical"
-                android:text="     Reset Pin "
+                android:text="     Reset"
                 android:textColor="#000000" />
 
             <TextView

@@ -98,6 +98,8 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 	String  Pin, load2, txt, img, color, colorbg, XYZ, carrierName, E,
 			proximity, tap, skips;
 
+	String hashedDots;
+
 	Context context;
 	AudioManager audiomanage;
 	Parameters p;
@@ -124,6 +126,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 	TextView textview;
 	Spanned update;
 	View v1,v2;
+
 
 	
 	@SuppressLint({ "SimpleDateFormat", "HandlerLeak", "DefaultLocale" })
@@ -671,6 +674,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 	}
 
 	// Inialize all objects
+	@SuppressLint("WifiManagerLeak")
 	@SuppressWarnings("static-access")
 	public void CreateTheLayout() {
 
@@ -738,6 +742,8 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 		Pin = sse.getString("pin", "");
 		skips = sse.getString("skip", "0");
 
+		hashedDots = sse.getString("hashedDots","");
+
 	}
 
 	// Controls gestures action
@@ -758,13 +764,17 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 						mHomeKeyLocker.unlock();
 					}
 
-					if (Pin.equals("")) {
+					if (Pin.equals("") && hashedDots.equals("")) {
 
 						onCan();
 
 					} else {
 
-						startActivity(new Intent(this, PinActivity.class));
+						if(hashedDots.equals("")&&!Pin.equals("")){
+							startActivity(new Intent(this, PinActivity.class));
+						}else{
+							startActivity(new Intent(this, RandomizedDotPattern.class));
+						}
 
 						onCan();
 						finish();
@@ -779,7 +789,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 					}
 
-					if (Pin.equals("")) {
+					if (Pin.equals("")&&hashedDots.equals("")) {
 
 						Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 						startActivityForResult(intent, 0);
@@ -787,7 +797,12 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 					} else {
 
-						startActivity(new Intent(this, PinActivity.class));
+						if(hashedDots.equals("")&&!Pin.equals("")){
+							startActivity(new Intent(this, PinActivity.class));
+						}else{
+							startActivity(new Intent(this, RandomizedDotPattern.class));
+						}
+
 						save("camera", "true");
 						finish();
 
@@ -891,7 +906,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 					}
 
-					if ( Pin.equals("")) {
+					if ( Pin.equals("") && hashedDots.equals("")) {
 
 						Uri uri = Uri.parse("http://www.google.com");
 						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -901,7 +916,11 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 					} else {
 
-						startActivity(new Intent(this, PinActivity.class));
+						if(hashedDots.equals("")&&!Pin.equals("")){
+							startActivity(new Intent(this, PinActivity.class));
+						}else{
+							startActivity(new Intent(this, RandomizedDotPattern.class));
+						}
 
 						save("browser", "true");
 						onCan();

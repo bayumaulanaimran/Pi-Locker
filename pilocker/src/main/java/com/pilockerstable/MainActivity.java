@@ -31,12 +31,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.almas.ShortcutSettings;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import eu.janmuller.android.simplecropimage.CropImage;
 
@@ -47,12 +50,18 @@ public class MainActivity extends ActionBarActivity {
 	 * @author MohamedRashad
 	 * 
 	 */
-	
+
+	int numOfColumns, numOfRows, cost;
+	String hashedDots;
+
+	Button setDots, setNumofColumns, setNumofRows;
+
 	public static final String TAG = "MainActivity";
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	public static final int REQUEST_CODE_GALLERY = 0x1;
 	public static final int REQUEST_CODE_TAKE_PICTURE = 0x2;
 	public static final int REQUEST_CODE_CROP_IMAGE = 0x3;
+	public static final int REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN = 0x4;
 	public final int CROP_FROM_CAMERA = 0;
 	
 	
@@ -119,7 +128,10 @@ public class MainActivity extends ActionBarActivity {
 		shortb = (Button) findViewById(R.id.shortcut);
 		button2 = (Button) findViewById(R.id.button2);
 		locknow = (Button) findViewById(R.id.button3);
-		
+
+		setDots = (Button)findViewById(R.id.buttonSetDots);
+		setNumofColumns = (Button)findViewById(R.id.buttonSetColumns);
+		setNumofRows = (Button)findViewById(R.id.buttonSetRows);
 
 		policyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 		adminReceiver = new ComponentName(context, DeviceAdmin.class);
@@ -153,10 +165,15 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				if (skip.equals("1")) {
+				if (skip.getText().equals("1")) {
 
-					startActivity(new Intent(MainActivity.this, PinActivity.class));
-					finish();
+					if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
+						startActivity(new Intent(MainActivity.this, RandomizedDotPattern.class));
+						finish();
+					}else if(!spf.getString("pin","").equalsIgnoreCase("")){
+						startActivity(new Intent(MainActivity.this, PinActivity.class));
+						finish();
+					}
 
 				} else {
 
@@ -175,101 +192,356 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				input1 = new EditText(context);
-				final String getPas = getString("pass");
+				if(!spf.getString("hashedDots", "").equalsIgnoreCase("")){
+					new AlertDialog.Builder(MainActivity.this)
+							.setTitle("Set PIN")
+							.setMessage("Setting your PIN would reset your Dots Pattern. \nAre you sure you want to set PIN?")
+							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
 
-				AlertDialog.Builder alert = new AlertDialog.Builder(context);
+								public void onClick(DialogInterface dialog, int which) {
 
-				alert.setMessage("Please write here\n\nYou should only write numbers 0-9.");
-				alert.setTitle("Enter New Pin");
-				
+									input1 = new EditText(context);
+									final String getPas = getString("pass");
+
+									AlertDialog.Builder alert = new AlertDialog.Builder(context);
+
+									alert.setMessage("Please write here\n\nYou should only write numbers 0-9.");
+									alert.setTitle("Enter New Pin");
+
+									alert.setView(input1);
+									alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+										public void onClick(DialogInterface dialog, int whichButton) {
+
+											String p = input1.getEditableText().toString();
+
+											if (p.contains("a") || p.contains("b")
+													|| p.contains("c") || p.contains("d")
+													|| p.contains("e") || p.contains("f")
+													|| p.contains("g") || p.contains("h")
+													|| p.contains("i") || p.contains("j")
+													|| p.contains("k") || p.contains("l")
+													|| p.contains("m") || p.contains("n")
+													|| p.contains("o") || p.contains("p")
+													|| p.contains("r") || p.contains("s")
+													|| p.contains("t") || p.contains("u")
+													|| p.contains("v") || p.contains("w")
+													|| p.contains("q") || p.contains("x")
+													|| p.contains("y") || p.contains("z")) {
+
+												Toast.makeText(context, "The pin only can hold numbers from 0 to 9", Toast.LENGTH_LONG).show();
+
+											} else {
+
+												if (p.trim().length() < 4) {
+
+													Toast.makeText(context, "Pin Must be atleast 4 Characters, try again", Toast.LENGTH_SHORT).show();
+
+												} else if (p.trim().length() >= 4 && p.trim().length() <= 12) {
+
+													if (getPas == "") {
+
+														final String inputtedPIN = p;
+
+														save("pass", "");
+														save("pin", inputtedPIN);
+														save("hashedDots", "");
+
+														save("numOfColumns",3);
+														save("numOfRows",3);
+
+														updateNumColumnsAndRows();
+
+														Toast.makeText(context, "PIN Updated", Toast.LENGTH_SHORT).show();
+
+														skip.setEnabled(true);
+														autoy.setEnabled(true);
 
 
-				alert.setView(input1);
-				alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+													}
 
-							public void onClick(DialogInterface dialog, int whichButton) {
-								
-								String p = input1.getEditableText().toString();
-								
-								if (p.contains("a") || p.contains("b")
-										|| p.contains("c") || p.contains("d")
-										|| p.contains("e") || p.contains("f")
-										|| p.contains("g") || p.contains("h")
-										|| p.contains("i") || p.contains("j")
-										|| p.contains("k") || p.contains("l")
-										|| p.contains("m") || p.contains("n")
-										|| p.contains("o") || p.contains("p")
-										|| p.contains("r") || p.contains("s")
-										|| p.contains("t") || p.contains("u")
-										|| p.contains("v") || p.contains("w")
-										|| p.contains("q") || p.contains("x")
-										|| p.contains("y") || p.contains("z")) {
 
-									Toast.makeText(context, "The pin only can hold numbers from 0 to 9", Toast.LENGTH_LONG).show();
+												} else if (p.trim().length() > 12) {
 
-								} else {
-									
-									if (p.trim().length() < 4) {
+													Toast.makeText(context, "The password must be less than 12 characters", Toast.LENGTH_SHORT).show();
 
-										Toast.makeText(context, "Pin Must be atleast 4 Characters, try again", Toast.LENGTH_SHORT).show();
+												}
 
-									} else if (p.trim().length() >= 4 && p.trim().length() <= 12) {
-
-						       if (getPas == "") {
-
-											save("pass", "");
-											save("pin", p);
-
-											Toast.makeText(context, "Pincode Updated", Toast.LENGTH_SHORT).show();
-
-											skip.setEnabled(true);
-											autoy.setEnabled(true);
-
-											
+											}
 										}
 
-						       
-									} else if (p.trim().length() > 12) {
+									});
 
-										Toast.makeText(context, "The password must be less than 12 characters", Toast.LENGTH_SHORT).show();
+
+									alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+										public void onClick(DialogInterface dialog, int whichButton) {
+
+											dialog.cancel();
+
+										}
+									});
+
+
+									AlertDialog alertDialog = alert.create();
+									alertDialog.show();
+
+								}
+							})
+
+							.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									dialog.cancel();
+
+								}
+
+							}).setIcon(R.drawable.ic_launcher).show();
+				}else{
+					input1 = new EditText(context);
+					final String getPas = getString("pass");
+
+					AlertDialog.Builder alert = new AlertDialog.Builder(context);
+
+					alert.setMessage("Please write here\n\nYou should only write numbers 0-9.");
+					alert.setTitle("Enter New Pin");
+
+					alert.setView(input1);
+					alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int whichButton) {
+
+							String p = input1.getEditableText().toString();
+
+							if (p.contains("a") || p.contains("b")
+									|| p.contains("c") || p.contains("d")
+									|| p.contains("e") || p.contains("f")
+									|| p.contains("g") || p.contains("h")
+									|| p.contains("i") || p.contains("j")
+									|| p.contains("k") || p.contains("l")
+									|| p.contains("m") || p.contains("n")
+									|| p.contains("o") || p.contains("p")
+									|| p.contains("r") || p.contains("s")
+									|| p.contains("t") || p.contains("u")
+									|| p.contains("v") || p.contains("w")
+									|| p.contains("q") || p.contains("x")
+									|| p.contains("y") || p.contains("z")) {
+
+								Toast.makeText(context, "The pin only can hold numbers from 0 to 9", Toast.LENGTH_LONG).show();
+
+							} else {
+
+								if (p.trim().length() < 4) {
+
+									Toast.makeText(context, "Pin Must be atleast 4 Characters, try again", Toast.LENGTH_SHORT).show();
+
+								} else if (p.trim().length() >= 4 && p.trim().length() <= 12) {
+
+									if (getPas == "") {
+
+										final String inputtedPIN = p;
+
+										save("pass", "");
+										save("pin", inputtedPIN);
+										save("hashedDots", "");
+
+										save("numOfColumns",3);
+										save("numOfRows",3);
+
+										updateNumColumnsAndRows();
+
+										Toast.makeText(context, "PIN Updated", Toast.LENGTH_SHORT).show();
+
+										skip.setEnabled(true);
+										autoy.setEnabled(true);
+
 
 									}
 
+
+								} else if (p.trim().length() > 12) {
+
+									Toast.makeText(context, "The password must be less than 12 characters", Toast.LENGTH_SHORT).show();
+
 								}
-							}
-
-						});
-
-				
-				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int whichButton) {
-
-								dialog.cancel();
 
 							}
-						});
-				
+						}
 
-				AlertDialog alertDialog = alert.create();
-				alertDialog.show();
+					});
+
+
+					alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int whichButton) {
+
+							dialog.cancel();
+
+						}
+					});
+
+
+					AlertDialog alertDialog = alert.create();
+					alertDialog.show();
+				}
+
 
 			}
 		});
 
-		
-		
+		setDots.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!spf.getString("pin","").equalsIgnoreCase("")){
+					new AlertDialog.Builder(MainActivity.this)
+							.setTitle("Set Dots Pattern")
+							.setMessage("Setting dots pattern will reset PIN \nAre you sure to set dots pattern?")
+							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
 
+								public void onClick(DialogInterface dialog, int which) {
+									save("pin","");
+
+									startSetDotPattern();
+								}
+							})
+
+							.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									dialog.cancel();
+
+								}
+
+							}).setIcon(R.drawable.ic_launcher).show();
+
+				}else{
+					startSetDotPattern();
+				}
+			}
+		});
+
+		setNumofColumns.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
+					new AlertDialog.Builder(MainActivity.this)
+							.setTitle("Set Number of Columns")
+							.setMessage("Setting number of columns will reset Dots Pattern \nAre you sure to set number of columns?")
+							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+									builderSingle.setIcon(R.drawable.ic_launcher);
+									builderSingle.setTitle("Select Number of Columns");
+
+									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_singlechoice);
+									arrayAdapter.add("3");
+									arrayAdapter.add("4");
+									arrayAdapter.add("5");
+
+									builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.cancel();
+										}
+									});
+
+									builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											String number = arrayAdapter.getItem(which);
+
+											save("numOfColumns", Integer.parseInt(number));
+											save("hashedDots","");
+
+											updateNumColumnsAndRows();
+										}
+									});
+									builderSingle.show();
+
+								}
+							})
+
+							.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									dialog.cancel();
+
+								}
+
+							}).setIcon(R.drawable.ic_launcher).show();
+
+				}
+			}
+		});
 		
-		
+		setNumofRows.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
+					new AlertDialog.Builder(MainActivity.this)
+							.setTitle("Set Number of Rows")
+							.setMessage("Setting number of rows will reset Dots Pattern \nAre you sure to set number of rows?")
+							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+									builderSingle.setIcon(R.drawable.ic_launcher);
+									builderSingle.setTitle("Select Number of Rows");
+
+									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_singlechoice);
+									arrayAdapter.add("3");
+									arrayAdapter.add("4");
+									arrayAdapter.add("5");
+
+									builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.cancel();
+										}
+									});
+
+									builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											String number = arrayAdapter.getItem(which);
+
+											save("numOfRows", Integer.parseInt(number));
+											save("hashedDots","");
+
+											updateNumColumnsAndRows();
+										}
+									});
+									builderSingle.show();
+
+								}
+							})
+
+							.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog, int which) {
+
+									dialog.cancel();
+
+								}
+
+							}).setIcon(R.drawable.ic_launcher).show();
+
+				}
+			}
+		});
 		
 		button2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 
 				new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Reset Pin/Password")
+						.setTitle("Reset Pin/Password/Dots")
 						.setMessage("Are you sure you want to reset security? \nthis will leave your phone UNSECURED")
 						.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
 
@@ -279,13 +551,19 @@ public class MainActivity extends ActionBarActivity {
 										skip.setEnabled(false);
 										autoy.setEnabled(false);
 
+										save("hashedDots","");
+										save("numOfColumns",3);
+										save("numOfRows",3);
+
+										updateNumColumnsAndRows();
+
 									}
 								})
 
 						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog, int which) {
-
+										dialog.cancel();
 									}
 
 								}).setIcon(R.drawable.ic_launcher).show();
@@ -293,6 +571,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 
 		});
+
 
 		skip.setOnClickListener(new OnClickListener() {
 			@Override
@@ -556,12 +835,29 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	
+	public void updateNumColumnsAndRows(){
+
+		numOfColumns = spf.getInt("numOfColumns", 3);
+		numOfRows = spf.getInt("numOfRows", 3);
+		setNumofColumns.setText("     Number of Columns = ".concat(String.valueOf(numOfColumns)));
+		setNumofRows.setText("     Number of Rows = ".concat(String.valueOf(numOfRows)));
+
+	}
+
 	public void save(String key, String value) {
 		
 		spf = PreferenceManager.getDefaultSharedPreferences(this);
 		Editor edit = spf.edit();
 		edit.putString(key, value);
+		edit.commit();
+
+	}
+
+	public void save(String key, int value) {
+
+		spf = PreferenceManager.getDefaultSharedPreferences(this);
+		Editor edit = spf.edit();
+		edit.putInt(key, value);
 		edit.commit();
 
 	}
@@ -586,7 +882,12 @@ public class MainActivity extends ActionBarActivity {
 		Pin = spf.getString("pin", "");
 	    auto = spf.getString("auto", "");
 
-		
+		numOfColumns = spf.getInt("numOfColumns",3);
+		numOfRows = spf.getInt("numOfRows",3);
+		hashedDots = spf.getString("hashedDots","");
+
+		cost = getOptimalBcryptCostParameter(250);
+
 		if (Pass.equals("") && Pin.equals("")) {
 
 			autoy.setEnabled(false);
@@ -689,7 +990,31 @@ public class MainActivity extends ActionBarActivity {
 		startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
 	}
 
-	
+	private void startSetDotPattern(){
+
+		Intent intent = new Intent(this, SetRandomizedDotPattern.class);
+
+		intent.putExtra("numOfColumns",numOfColumns);
+		intent.putExtra("numOfRows",numOfRows);
+
+		startActivityForResult(intent, REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN);
+
+	}
+
+	public int getOptimalBcryptCostParameter(long min_ms) {
+		int c=10;
+		for (int i = 5; i < 31; i++) {
+			long time_start = System.currentTimeMillis();
+			BCrypt.hashpw("test",BCrypt.gensalt(i));
+			long time_end = System.currentTimeMillis();
+			if ((time_end - time_start) * 1000 > min_ms) {
+				c=i;
+				break;
+			}
+		}
+		return c;
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -735,6 +1060,40 @@ public class MainActivity extends ActionBarActivity {
 			save("img", mFileTemp.getPath());
 
 			break;
+
+			//Set Pattern
+			case REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN:
+
+				final Intent dataFinal = data;
+
+				new AlertDialog.Builder(MainActivity.this)
+						.setTitle("Set Dots")
+						.setMessage("Set Dots Pattern will reset your PIN \nAre you sure you want to reset PIN?")
+						.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface dialog, int which) {
+
+								save("pin", "");
+								skip.setEnabled(false);
+								autoy.setEnabled(false);
+
+								save("hashedDots",BCrypt.hashpw(dataFinal.getStringExtra("dots"), BCrypt.gensalt(cost)));
+
+								Toast.makeText(context,"Dots Saved!",Toast.LENGTH_SHORT).show();
+
+							}
+						})
+
+						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+
+						}).setIcon(R.drawable.ic_launcher).show();
+
+				break;
+
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

@@ -79,7 +79,22 @@
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-
+        <activity
+            android:name=".RandomizedDotPattern"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_pin"
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".SetRandomizedDotPattern"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_pin"
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
         <receiver
             android:name=".LockBoot"
             android:enabled="true" >
