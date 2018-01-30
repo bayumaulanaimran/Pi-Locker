@@ -127,15 +127,9 @@ public class DotChooseActivity extends Activity{
     }
 
     public void updateDots(){
-        updateDot(0);
-        updateDot(1);
-        updateDot(2);
-        updateDot(3);
-        updateDot(4);
-        updateDot(5);
-        updateDot(6);
-        updateDot(7);
-        updateDot(8);
+        for (int i = 0; i < buttonList.size(); i++) {
+            updateDot(i);
+        }
     }
 
     public void updateUnlocker(){
