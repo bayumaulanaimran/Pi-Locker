@@ -21,12 +21,13 @@ import android.widget.TextView;
 
 import com.pilockerstable.LockerService;
 import com.pilockerstable.PinActivity;
+import com.pilockerstable.RandomizedDotPattern;
 
 public class ShortcutView extends LinearLayout {
 	private int CAPACITY = 4;
 	private PackageManager pm;
 	SharedPreferences sec;
-	String pkg,pin;
+	String pkg,pin,hashedDots;
 	public ShortcutView(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 		pm = context.getPackageManager();
@@ -35,7 +36,7 @@ public class ShortcutView extends LinearLayout {
 
 		pkg = sec.getString("pkg", "");
 		pin = sec.getString("pin", "");		
-		
+		hashedDots = sec.getString("hashedDots","");
 		
 		for (int i = 0; i < CAPACITY; i++) {
 			final int b = i;
@@ -43,7 +44,7 @@ public class ShortcutView extends LinearLayout {
 			String sv = null;
 			String s = Settings.System.getString(context.getContentResolver(), "PiSC" + i);
 
-			if (s == null | s == "") {
+			if (s == null | s.equals("")) {
 
 				Settings.System.putString(context.getContentResolver(), "PiSC"+b, "com.pilockerstable");
 			}
@@ -77,7 +78,7 @@ public class ShortcutView extends LinearLayout {
 				@Override 
 				public void onClick(View arg0) {
 
-					if( pin.equals("") || pin.equals(null) || pin.isEmpty()) {
+					if( pin.equals("") || pin.equals(null) || pin.isEmpty() || hashedDots.equals("") || hashedDots.equals(null) || hashedDots.isEmpty()) {
 						
 						((Activity) context).finish();
 						Intent i = new Intent();
@@ -90,11 +91,19 @@ public class ShortcutView extends LinearLayout {
 					}else{
 					
 					save("pkg", "true");
-					Intent x = new Intent(getContext(), PinActivity.class);
-					x.putExtra("sv", sv);
-					context.startActivity(x);
-			
-					
+					Intent x;
+					if(!pin.equals("")&&hashedDots.equals("")){
+						x = new Intent(getContext(), PinActivity.class);
+
+						x.putExtra("sv", sv);
+						context.startActivity(x);
+					}else if(!hashedDots.equals("")&&pin.equals("")){
+						x = new Intent(getContext(), RandomizedDotPattern.class);
+
+						x.putExtra("sv", sv);
+						context.startActivity(x);
+					}
+
 					}
 				}
 			});

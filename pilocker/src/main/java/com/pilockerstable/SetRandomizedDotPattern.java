@@ -51,8 +51,10 @@ public class SetRandomizedDotPattern extends Activity{
 
         dotList = new ArrayList<>(numOfRows*numOfColumns);
 
+        Dot dot = new Dot(R.drawable.pin1, 0, View.VISIBLE);
+
         for (int i = 0; i < numOfRows*numOfColumns; i++) {
-            dotList.add(new Dot(R.drawable.pin1, 0, View.VISIBLE));
+            dotList.add(dot);
         }
 
         gridView = (GridView)findViewById(R.id.gridview);
@@ -61,7 +63,7 @@ public class SetRandomizedDotPattern extends Activity{
 
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeLayoutButton);
         int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
-        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns,dimension*(numOfRows+1)));
+        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns+10,dimension*(numOfRows+1)));
 
         dotAdapter = new DotAdapter(this,dotList);
 

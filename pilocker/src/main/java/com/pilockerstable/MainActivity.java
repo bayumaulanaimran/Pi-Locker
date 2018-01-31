@@ -140,9 +140,7 @@ public class MainActivity extends ActionBarActivity {
 		loadon();
 		loadX();
 
-		
-
-		
+		updateNumColumnsAndRows();
 		
 		shortb.setOnClickListener(new OnClickListener() {
 
@@ -196,7 +194,7 @@ public class MainActivity extends ActionBarActivity {
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set PIN")
 							.setMessage("Setting your PIN would reset your Dots Pattern. \nAre you sure you want to set PIN?")
-							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+							.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
 
@@ -397,7 +395,7 @@ public class MainActivity extends ActionBarActivity {
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set Dots Pattern")
 							.setMessage("Setting dots pattern will reset PIN \nAre you sure to set dots pattern?")
-							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
 									save("pin","");
@@ -429,7 +427,7 @@ public class MainActivity extends ActionBarActivity {
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set Number of Columns")
 							.setMessage("Setting number of columns will reset Dots Pattern \nAre you sure to set number of columns?")
-							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
 
@@ -437,7 +435,7 @@ public class MainActivity extends ActionBarActivity {
 									builderSingle.setIcon(R.drawable.ic_launcher);
 									builderSingle.setTitle("Select Number of Columns");
 
-									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_singlechoice);
+									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
 									arrayAdapter.add("3");
 									arrayAdapter.add("4");
 									arrayAdapter.add("5");
@@ -475,6 +473,35 @@ public class MainActivity extends ActionBarActivity {
 
 							}).setIcon(R.drawable.ic_launcher).show();
 
+				}else{
+					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+					builderSingle.setIcon(R.drawable.ic_launcher);
+					builderSingle.setTitle("Select Number of Columns");
+
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
+					arrayAdapter.add("3");
+					arrayAdapter.add("4");
+					arrayAdapter.add("5");
+
+					builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							String number = arrayAdapter.getItem(which);
+
+							save("numOfColumns", Integer.parseInt(number));
+							save("hashedDots","");
+
+							updateNumColumnsAndRows();
+						}
+					});
+					builderSingle.show();
 				}
 			}
 		});
@@ -486,7 +513,7 @@ public class MainActivity extends ActionBarActivity {
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set Number of Rows")
 							.setMessage("Setting number of rows will reset Dots Pattern \nAre you sure to set number of rows?")
-							.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
 
@@ -494,7 +521,7 @@ public class MainActivity extends ActionBarActivity {
 									builderSingle.setIcon(R.drawable.ic_launcher);
 									builderSingle.setTitle("Select Number of Rows");
 
-									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_singlechoice);
+									final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
 									arrayAdapter.add("3");
 									arrayAdapter.add("4");
 									arrayAdapter.add("5");
@@ -532,6 +559,35 @@ public class MainActivity extends ActionBarActivity {
 
 							}).setIcon(R.drawable.ic_launcher).show();
 
+				}else{
+					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+					builderSingle.setIcon(R.drawable.ic_launcher);
+					builderSingle.setTitle("Select Number of Rows");
+
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
+					arrayAdapter.add("3");
+					arrayAdapter.add("4");
+					arrayAdapter.add("5");
+
+					builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							String number = arrayAdapter.getItem(which);
+
+							save("numOfRows", Integer.parseInt(number));
+							save("hashedDots","");
+
+							updateNumColumnsAndRows();
+						}
+					});
+					builderSingle.show();
 				}
 			}
 		});
@@ -560,7 +616,7 @@ public class MainActivity extends ActionBarActivity {
 									}
 								})
 
-						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog, int which) {
 										dialog.cancel();
@@ -1064,33 +1120,7 @@ public class MainActivity extends ActionBarActivity {
 			//Set Pattern
 			case REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN:
 
-				final Intent dataFinal = data;
-
-				new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Set Dots")
-						.setMessage("Set Dots Pattern will reset your PIN \nAre you sure you want to reset PIN?")
-						.setPositiveButton("SET", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int which) {
-
-								save("pin", "");
-								skip.setEnabled(false);
-								autoy.setEnabled(false);
-
-								save("hashedDots",BCrypt.hashpw(dataFinal.getStringExtra("dots"), BCrypt.gensalt(cost)));
-
-								Toast.makeText(context,"Dots Saved!",Toast.LENGTH_SHORT).show();
-
-							}
-						})
-
-						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int which) {
-
-							}
-
-						}).setIcon(R.drawable.ic_launcher).show();
+				save("hashedDots",BCrypt.hashpw(data.getStringExtra("dots"),BCrypt.gensalt(cost)));
 
 				break;
 

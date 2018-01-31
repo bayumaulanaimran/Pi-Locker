@@ -202,7 +202,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 				messagesCount();
 				dateAndTime();
 
-				if (!Pin.equals("")) {
+				if (!Pin.equals("") || !hashedDots.equals("")) {
 
 					Intent closeDialog = new Intent(
 							Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
@@ -303,7 +303,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 			@Override
 			public void onClick(View arg0) {
 
-				if (E.equals("true") && Pin.equals("")) {
+				if (E.equals("true") && Pin.equals("") && hashedDots.equals("")) {
 
 					onCan();
 
@@ -611,9 +611,14 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 		// If user chose to skip the gesture screen
 		if (skips.equals("1")) {
 
-			if (Pin != null || Pin != "") {
+			if (!Pin.equals("")&&hashedDots.equals("")) {
 
 				startActivity(new Intent(Lock.this, PinActivity.class));
+				finish();
+
+			}else if(!hashedDots.equals("")&&Pin.equals("")){
+
+				startActivity(new Intent(Lock.this, RandomizedDotPattern.class));
 				finish();
 
 			}
@@ -772,7 +777,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
-						}else{
+						}else if(!hashedDots.equals("")&&Pin.equals("")){
 							startActivity(new Intent(this, RandomizedDotPattern.class));
 						}
 
@@ -799,7 +804,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
-						}else{
+						}else if(!hashedDots.equals("")&&Pin.equals("")){
 							startActivity(new Intent(this, RandomizedDotPattern.class));
 						}
 
@@ -918,7 +923,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
-						}else{
+						}else if(!hashedDots.equals("")&&Pin.equals("")){
 							startActivity(new Intent(this, RandomizedDotPattern.class));
 						}
 
@@ -1050,7 +1055,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 		wmanager.removeView(view);
 
 		
-		if(Pin.equals("")){
+		if(Pin.equals("")&&hashedDots.equals("")){
 			
 		    try {
 

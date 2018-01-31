@@ -33,6 +33,7 @@ import android.widget.Toast;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by MY PC on 29/01/2018.
@@ -49,6 +50,7 @@ public class RandomizedDotPattern extends Activity{
 
     ArrayList<Dot> dotList;
     DotAdapter dotAdapter;
+    Dot dot;
 
     String dots, hashedDots;
 
@@ -71,6 +73,8 @@ public class RandomizedDotPattern extends Activity{
 
     boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
     boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
+
+    Random rd;
 
     @SuppressLint({ "HandlerLeak", "SimpleDateFormat" })
     @Override
@@ -124,37 +128,6 @@ public class RandomizedDotPattern extends Activity{
 
         }
 
-        mainhandler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-
-                Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-                sendBroadcast(closeDialog);
-
-            }
-        };
-
-        new Thread(new Runnable() {
-            public void run() {
-
-                while (true) {
-                    try {
-
-                        Thread.sleep(1000);
-                        mainhandler.sendEmptyMessage(0);
-
-                    } catch (InterruptedException e) {
-
-                        e.printStackTrace();
-                    }
-
-                }
-
-            }
-        }).start();
-
         //mulai
         setContentView(R.layout.gridview);
 
@@ -163,8 +136,16 @@ public class RandomizedDotPattern extends Activity{
 
         dotList = new ArrayList<>(numOfRows*numOfColumns);
 
+        dot = new Dot(R.drawable.pin1, 0, View.VISIBLE);
+
+        rd = new Random();
         for (int i = 0; i < numOfRows*numOfColumns; i++) {
-            dotList.add(new Dot(R.drawable.pin1, 0, View.VISIBLE));
+            dotList.add(dot);
+            if(rd.nextBoolean()){
+                dotList.get(i).setDrawableId(R.drawable.pin2);
+            }else{
+                dotList.get(i).setDrawableId(R.drawable.pin1);
+            }
         }
 
         gridView = (GridView)findViewById(R.id.gridview);
@@ -173,7 +154,7 @@ public class RandomizedDotPattern extends Activity{
 
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeLayoutButton);
         int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
-        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns,dimension*(numOfRows+1)));
+        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns+10,dimension*(numOfRows+1)));
 
         dotAdapter = new DotAdapter(this,dotList);
 
@@ -194,9 +175,17 @@ public class RandomizedDotPattern extends Activity{
 
                             for (int i = 0; i < dotList.size(); i++) {
                                 if(i==position){
-                                    dotList.set(i,new Dot(R.drawable.pin1,0, View.VISIBLE));
+//                                    dotList.set(i,new Dot(R.drawable.pin1,0, View.VISIBLE));
+                                    dot.setSequence(0);
+                                    dot.setDrawableId(R.drawable.pin1);
+                                    dot.setInvisibility(View.VISIBLE);
+                                    dotList.set(i,dot);
                                 }else if(dotList.get(i).getSequence()>seqNow){
-                                    dotList.set(i,new Dot(R.drawable.pin1,dotList.get(i).getSequence()-1, View.VISIBLE));
+//                                    dotList.set(i,new Dot(R.drawable.pin1,dotList.get(i).getSequence()-1, View.VISIBLE));
+                                    dot.setSequence(dotList.get(i).getSequence()-1);
+                                    dot.setDrawableId(R.drawable.pin1);
+                                    dot.setInvisibility(View.VISIBLE);
+                                    dotList.set(i,dot);
                                 }
                             }
 
@@ -207,9 +196,17 @@ public class RandomizedDotPattern extends Activity{
 
                 }else{
                     if(dotList.get(position).getDrawableId()==R.drawable.pin1){
-                        dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
+//                        dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
+                        dot.setSequence(0);
+                        dot.setDrawableId(R.drawable.pin2);
+                        dot.setInvisibility(View.VISIBLE);
+                        dotList.set(position,dot);
                     }else{
-                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
+//                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                        dot.setSequence(0);
+                        dot.setDrawableId(R.drawable.pin2);
+                        dot.setInvisibility(View.VISIBLE);
+                        dotList.set(position,dot);
                     }
                 }
 
@@ -275,9 +272,17 @@ public class RandomizedDotPattern extends Activity{
 
                         for (int i = 0; i < dotList.size(); i++) {
                             if(dotList.get(i).getDrawableId()==R.drawable.pin1){
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+//                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+                                dot.setSequence(0);
+                                dot.setDrawableId(R.drawable.pin1);
+                                dot.setInvisibility(View.INVISIBLE);
+                                dotList.set(i,dot);
                             }else{
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+//                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                                dot.setSequence(0);
+                                dot.setDrawableId(R.drawable.pin1);
+                                dot.setInvisibility(View.VISIBLE);
+                                dotList.set(i,dot);
                             }
                         }
                     }else{
@@ -304,9 +309,17 @@ public class RandomizedDotPattern extends Activity{
                     counter=0;
                     for (int i = 0; i < dotList.size(); i++) {
                         if(dotList.get(i).getInvisibility()==View.INVISIBLE){
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+//                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            dot.setSequence(0);
+                            dot.setDrawableId(R.drawable.pin1);
+                            dot.setInvisibility(View.VISIBLE);
+                            dotList.set(i,dot);
                         }else{
-                            dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
+//                            dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
+                            dot.setSequence(0);
+                            dot.setDrawableId(R.drawable.pin2);
+                            dot.setInvisibility(View.VISIBLE);
+                            dotList.set(i,dot);
                         }
                     }
 
@@ -317,6 +330,36 @@ public class RandomizedDotPattern extends Activity{
             }
         });
 
+        mainhandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+                sendBroadcast(closeDialog);
+
+            }
+        };
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                while (true) {
+                    try {
+
+                        Thread.sleep(1000);
+                        mainhandler.sendEmptyMessage(0);
+
+                    } catch (InterruptedException e) {
+
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        }).start();
     }
 
     public void loadlock() {
