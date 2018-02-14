@@ -146,7 +146,7 @@
             android:theme="@style/Theme.AppCompat" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pilockerstable.ShortcutSettings" />
+                android:value="com.almas.ShortcutSettings" />
         </activity>
 
         <service
