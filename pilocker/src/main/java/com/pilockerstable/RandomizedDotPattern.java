@@ -217,6 +217,7 @@ public class RandomizedDotPattern extends Activity{
 
         th.setPriority(Thread.MIN_PRIORITY);
         th.start();
+
     }
 
     public void loadlock() {
@@ -368,9 +369,16 @@ public class RandomizedDotPattern extends Activity{
 
                 if(rDPWReference.get().dotList.get(integers[0]).getInvisibility()==View.VISIBLE){
 
-                    if(rDPWReference.get().dotList.get(integers[0]).getSequence()==0){
+                    if(integers[1]==0){
+
                         rDPWReference.get().counter++;
-                        rDPWReference.get().dotList.set(integers[0],new Dot(R.drawable.pin1,rDPWReference.get().counter,View.VISIBLE));
+
+                        rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
+                        rDPWReference.get().dot.setSequence(rDPWReference.get().counter);
+                        rDPWReference.get().dot.setInvisibility(View.VISIBLE);
+
+                        rDPWReference.get().dotList.set(integers[0],rDPWReference.get().dot);
+
                     }else{
 
                         int seqNow = rDPWReference.get().dotList.get(integers[0]).getSequence();
@@ -385,6 +393,7 @@ public class RandomizedDotPattern extends Activity{
 
                             rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
                             rDPWReference.get().dot.setInvisibility(View.VISIBLE);
+
                             rDPWReference.get().dotList.set(i,rDPWReference.get().dot);
 
                         }
@@ -555,6 +564,7 @@ public class RandomizedDotPattern extends Activity{
                     rDPWReference.get().counter = 0;
 
                     for (int i = 0; i < rDPWReference.get().dotList.size(); i++) {
+
                         if (rDPWReference.get().dotList.get(i).getDrawableId() == R.drawable.pin1) {
 //                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
                             rDPWReference.get().dot.setInvisibility(View.INVISIBLE);
@@ -562,8 +572,10 @@ public class RandomizedDotPattern extends Activity{
 //                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
                             rDPWReference.get().dot.setInvisibility(View.VISIBLE);
                         }
+
                         rDPWReference.get().dot.setSequence(0);
                         rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
+
                         rDPWReference.get().dotList.set(i, rDPWReference.get().dot);
                     }
 
@@ -612,8 +624,11 @@ public class RandomizedDotPattern extends Activity{
                 rDPWReference.get().cancel.setVisibility(View.INVISIBLE);
 
                 rDPWReference.get().flag = false;
+
                 rDPWReference.get().textView.setText("Select Dots");
+
                 rDPWReference.get().counter=0;
+
                 for (int i = 0; i < rDPWReference.get().dotList.size(); i++) {
                     if(rDPWReference.get().dotList.get(i).getInvisibility()==View.INVISIBLE){
 //                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));

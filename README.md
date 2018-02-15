@@ -1,7 +1,7 @@
-Pi-Locker
+Pi-Locker (With Randomized Dot Pattern Scheme)
 =========
 
-**A smart and clean lockscreen replacement for android with unlocking gestures**
+**A smart and clean lock screen replacement for android with unlocking gestures**
         
         
   ![alt tag](http://s2.postimg.org/ng1k5z4pl/pi_locker_header.png)
@@ -12,24 +12,24 @@ Pi-Locker
 **Current version : 6.0.1**
 
 
-**Intrdouction :**
+**Introduction :**
 
-There is a punch of lockscreens for android Devices, but only little  have the simplicity + awesome features,
-so we decided to save the world and create this lockscreen replacement.
-This is not a coffee machine or your dishwasher,just an innovative lockscreen project that is still developing.
+There is a punch of lock screens for android Devices, but only little  have the simplicity + awesome features,
+so we decided to save the world and create this lock screen replacement.
+This is not a coffee machine or your dishwasher,just an innovative lock screen project that is still developing.
 
 
 **About Project :**
 
-This is a result of combinining the best of each lockscreen in the platforms and adding our own touch to get the best lockscreen ever.
+This is a result of combining the best of each lock screen in the platforms and adding our own touch to get the best lock screen ever.
 
-Pi Locker is the lowest ram consuming lockscreen ever.
+Pi Locker is the lowest ram consuming lock screen ever.
 
 Enjoy Our Experience.
 
 **Pi locker :**
 
-The only locscreen that is professional and opensourced, you cannot only customize the lockscreen, but fork the code and build your own lockscreen, because you deserve this and we support openness.
+The only lock screen that is professional and open sourced, you cannot only customize the lock screen, but fork the code and build your own lock screen, because you deserve this and we support openness.
 
 
 **Features :**
@@ -54,9 +54,9 @@ The only locscreen that is professional and opensourced, you cannot only customi
     
 >>-Changeable background color
     
->>-Emergengy unlock
+>>-Emergency unlock
     
->>-Show/Hide statusbar
+>>-Show/Hide status bar
     
 >>-Pin security
     
