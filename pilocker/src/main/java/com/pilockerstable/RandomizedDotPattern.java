@@ -8,13 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyCharacterMap;
@@ -34,7 +32,6 @@ import android.widget.Toast;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -53,21 +50,12 @@ public class RandomizedDotPattern extends Activity{
 
     ArrayList<Dot> dotList;
     DotAdapter dotAdapter;
-    Dot dot;
 
     String dots, hashedDots;
 
-    boolean flag;
+    boolean flag, randomBoolean;
 
     int numOfRows, numOfColumns, counter;
-
-    DotClickedTask dotClickedTask;
-    SequenceClickedTask sequenceClickedTask;
-
-    ConfirmTask confirmTask;
-    UnlockTask unlockTask;
-
-    CancelTask cancelTask;
 
     SharedPreferences sec;
 
@@ -90,33 +78,23 @@ public class RandomizedDotPattern extends Activity{
     @SuppressLint({ "HandlerLeak", "SimpleDateFormat" })
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         stopService(new Intent(RandomizedDotPattern.this, LockerService.class));
 
         loadlock();
 
-        fullscreen();
+        fullScreen();
 
         setContentView(R.layout.gridview);
 
         flag=false;
         counter = 0;
 
-        dotList = new ArrayList<>(numOfRows*numOfColumns);
-
-        dot = new Dot(R.drawable.pin1, 0, View.VISIBLE);
-
         rd = new Random();
-        for (int i = 0; i < numOfRows*numOfColumns; i++) {
-            if(rd.nextBoolean()){
-                dot.setDrawableId(R.drawable.pin2);
-            }else{
-                dot.setDrawableId(R.drawable.pin1);
-            }
-            dotList.add(dot);
-        }
+        randomBoolean = rd.nextBoolean();
+
+        dotList = randomizeDots(numOfRows,numOfColumns);
 
         gridView = (GridView)findViewById(R.id.gridview);
 
@@ -130,47 +108,116 @@ public class RandomizedDotPattern extends Activity{
 
         gridView.setAdapter(dotAdapter);
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                if(flag){
+
+                    if(dotList.get(position).getInvisibility()==View.VISIBLE){
+                        if(dotList.get(position).getSequence()==0){
+                            counter++;
+                            dotList.set(position,new Dot(R.drawable.pin1,counter,View.VISIBLE));
+                        }else{
+
+                            int seqNow = dotList.get(position).getSequence();
+
+                            for (int i = 0; i < dotList.size(); i++) {
+                                if(i==position){
+                                    dotList.set(i,new Dot(R.drawable.pin1,0, View.VISIBLE));
+                                }else if(dotList.get(i).getSequence()>seqNow){
+                                    dotList.set(i,new Dot(R.drawable.pin1,dotList.get(i).getSequence()-1, View.VISIBLE));
+                                }
+                            }
+
+                            counter--;
+
+                        }
+                    }
+
+                }else{
+                    if(dotList.get(position).getDrawableId()==R.drawable.pin1){
+                        dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
+                    }else{
+                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                    }
+                }
+
+                dotAdapter.notifyDataSetChanged();
+
+            }
+        });
+
         textView = (TextView)findViewById(R.id.textTitle);
 
         confirm = (Button)findViewById(R.id.confirm);
         cancel = (Button)findViewById(R.id.cancel);
 
-        sequenceClickedTask = new SequenceClickedTask(this);
-        dotClickedTask = new DotClickedTask(this);
-
-        confirmTask = new ConfirmTask(this);
-        unlockTask = new UnlockTask(this);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-
-                if(flag){
-
-                    sequenceClickedTask.execute(position,dotList.get(position).getSequence());
-
-                }else{
-
-                    dotClickedTask.execute(position);
-
-                }
-
-            }
-        });
+        cancel.setVisibility(View.INVISIBLE);
+        cancel.setEnabled(false);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(flag){
+                    StringBuilder sb = new StringBuilder(numOfRows*numOfColumns);
+                    dots = "";
 
-                    unlockTask.execute();
+                    int sumDotSelected=0;
+
+                    for (Dot dot : dotList) {
+                        sb.append(dot.getSequence());
+                        if (dot.getInvisibility()==View.VISIBLE){
+                            sumDotSelected++;
+                        }
+                    }
+
+                    if(sumDotSelected==counter){
+
+                        dots = sb.toString();
+
+                        authentication();
+
+                    }else{
+                        Toast.makeText(RandomizedDotPattern.this,"You Must Give Number to All Selected Dots!",Toast.LENGTH_SHORT).show();
+                    }
 
                 }else{
 
-                    confirmTask.execute();
+                    int numDotSelected = 0;
+                    for (Dot dot : dotList) {
+                        if(dot.getDrawableId()==R.drawable.pin2){
+                            numDotSelected++;
+                        }
+                    }
+
+                    if(numDotSelected>=4){
+
+                        confirm.setText("OK");
+
+                        cancel.setText("Back");
+                        cancel.setVisibility(View.VISIBLE);
+                        cancel.setEnabled(true);
+
+                        flag = true;
+                        textView.setText("Give Number to Dots");
+                        counter=0;
+
+                        for (int i = 0; i < dotList.size(); i++) {
+                            if(dotList.get(i).getDrawableId()==R.drawable.pin1){
+                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+                            }else{
+                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            }
+                        }
+
+                    }else{
+                        Toast.makeText(RandomizedDotPattern.this,"Select At Least 4 Dots", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
+
+                dotAdapter.notifyDataSetChanged();
 
             }
         });
@@ -179,8 +226,28 @@ public class RandomizedDotPattern extends Activity{
             @Override
             public void onClick(View v) {
                 if(flag){
-                    cancelTask.execute();
+                    confirm.setText("OK");
+
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
+
+                    flag = false;
+                    textView.setText("Select Dots");
+                    counter=0;
+                    for (int i = 0; i < dotList.size(); i++) {
+
+                        if(dotList.get(i).getInvisibility()==View.INVISIBLE){
+                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                        }else{
+                            dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
+                        }
+
+                    }
+
+                    dotAdapter.notifyDataSetChanged();
+
                 }
+
             }
         });
 
@@ -196,7 +263,7 @@ public class RandomizedDotPattern extends Activity{
             }
         };
 
-        Thread th = new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             public void run() {
 
                 while (true) {
@@ -215,8 +282,9 @@ public class RandomizedDotPattern extends Activity{
             }
         });
 
-        th.setPriority(Thread.MIN_PRIORITY);
-        th.start();
+        thread.setPriority(Thread.MIN_PRIORITY);
+
+        thread.start();
 
     }
 
@@ -234,6 +302,14 @@ public class RandomizedDotPattern extends Activity{
         numOfColumns = sec.getInt("numOfColumns",3);
         numOfRows = sec.getInt("numOfRows",3);
         hashedDots = sec.getString("hashedDots","");
+
+    }
+
+    public void save(String key, String value) {
+
+        SharedPreferences.Editor edit = sec.edit();
+        edit.putString(key, value);
+        edit.commit();
 
     }
 
@@ -261,8 +337,67 @@ public class RandomizedDotPattern extends Activity{
         finish();
     }
 
-    public void fullscreen(){
+    public void authentication(){
 
+        if (BCrypt.checkpw(dots,hashedDots)) {
+
+            if (browser.equals("true")) {
+
+                Uri uri = Uri.parse("http://www.google.com");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+
+                save("browser", "");
+
+            } else if (camera.equals("true")) {
+
+                Intent intent = new Intent(
+                        "android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intent, 0);
+                save("camera", "");
+
+            } else if (pkg.equals("true")) {
+
+                sv = getIntent().getStringExtra("sv");
+                Intent i = new Intent();
+                i.setClass(getBaseContext(), LockerService.class);
+                startService(i);
+                Intent LaunchIntent = getPackageManager()
+                        .getLaunchIntentForPackage(sv);
+                LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(LaunchIntent);
+
+            }
+
+            onCan();
+
+        }
+
+        else {
+
+            Toast.makeText(getApplicationContext(),
+                    "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    public ArrayList<Dot> randomizeDots(int numRows, int numColumns){
+        ArrayList<Dot> arrayDots = new ArrayList<>(numColumns*numRows);
+
+        for (int i = 0; i < numRows*numColumns; i++) {
+            randomBoolean = rd.nextBoolean();
+            if(randomBoolean){
+                arrayDots.add(new Dot(R.drawable.pin2,0,View.VISIBLE));
+            }else{
+                arrayDots.add(new Dot(R.drawable.pin1,0,View.VISIBLE));
+            }
+        }
+
+        return arrayDots;
+    }
+
+    public void fullScreen(){
         window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -302,359 +437,6 @@ public class RandomizedDotPattern extends Activity{
 
             mHomeKeyLocker = new HomeKeyLocker();
             mHomeKeyLocker.lock(this);
-
-        }
-
-    }
-
-    public static class DotClickedTask extends AsyncTask<Integer,String,String>{
-
-        private WeakReference<RandomizedDotPattern> rDPWReference;
-
-        public DotClickedTask(RandomizedDotPattern context) {
-            rDPWReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected String doInBackground(Integer... integers) {
-
-            if(rDPWReference.get() == null || rDPWReference.get().isFinishing()){
-                return "";
-            }else{
-
-                if(rDPWReference.get().dotList.get(integers[0]).getDrawableId()==R.drawable.pin1){
-//                        dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
-                    rDPWReference.get().dot.setDrawableId(R.drawable.pin2);
-                }else{
-//                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
-                    rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
-                }
-                rDPWReference.get().dot.setSequence(0);
-                rDPWReference.get().dot.setInvisibility(View.VISIBLE);
-                rDPWReference.get().dotList.set(integers[0],rDPWReference.get().dot);
-
-                return "OK";
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(s.equalsIgnoreCase("OK")){
-
-                // This tells the GridView to redraw itself
-                // in turn calling your BooksAdapter's getView method again for each cell
-                rDPWReference.get().dotAdapter.notifyDataSetChanged();
-
-            }
-
-        }
-    }
-
-    public static class SequenceClickedTask extends AsyncTask<Integer,String,String>{
-
-        WeakReference<RandomizedDotPattern> rDPWReference;
-
-        public SequenceClickedTask(RandomizedDotPattern context){
-            rDPWReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected String doInBackground(Integer... integers) {
-            if(rDPWReference.get()==null||rDPWReference.get().isFinishing()){
-                return "";
-            }else{
-
-                if(rDPWReference.get().dotList.get(integers[0]).getInvisibility()==View.VISIBLE){
-
-                    if(integers[1]==0){
-
-                        rDPWReference.get().counter++;
-
-                        rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
-                        rDPWReference.get().dot.setSequence(rDPWReference.get().counter);
-                        rDPWReference.get().dot.setInvisibility(View.VISIBLE);
-
-                        rDPWReference.get().dotList.set(integers[0],rDPWReference.get().dot);
-
-                    }else{
-
-                        int seqNow = rDPWReference.get().dotList.get(integers[0]).getSequence();
-
-                        for (int i = 0; i < rDPWReference.get().dotList.size(); i++) {
-
-                            if(i==integers[0]){
-                                rDPWReference.get().dot.setSequence(0);
-                            }else if(rDPWReference.get().dotList.get(i).getSequence()>seqNow){
-                                rDPWReference.get().dot.setSequence(rDPWReference.get().dotList.get(i).getSequence()-1);
-                            }
-
-                            rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
-                            rDPWReference.get().dot.setInvisibility(View.VISIBLE);
-
-                            rDPWReference.get().dotList.set(i,rDPWReference.get().dot);
-
-                        }
-
-                        rDPWReference.get().counter--;
-
-                    }
-
-                }
-
-                return "OK";
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(s.equalsIgnoreCase("OK")){
-                rDPWReference.get().dotAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    public static class UnlockTask extends AsyncTask<String, String, String>{
-
-        WeakReference<RandomizedDotPattern> rDPWReference;
-
-        public UnlockTask(RandomizedDotPattern context){
-            rDPWReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            if(rDPWReference.get() == null || rDPWReference.get().isFinishing()) {
-
-                return "";
-
-            }else{
-
-                StringBuilder sb = new StringBuilder(rDPWReference.get().dotList.size());
-                rDPWReference.get().dots = "";
-
-                int sumDotSelected=0;
-
-                for (Dot dot : rDPWReference.get().dotList) {
-                    sb.append(dot.getSequence());
-                    if (dot.getInvisibility()==View.VISIBLE){
-                        sumDotSelected++;
-                    }
-                }
-
-                if(sumDotSelected==rDPWReference.get().counter){
-
-                    rDPWReference.get().dots = sb.toString();
-
-                    return "OK";
-
-                }else{
-
-                    return "";
-
-                }
-
-            }
-
-        }
-
-        public void save(String key, String value) {
-
-            SharedPreferences.Editor edit = rDPWReference.get().sec.edit();
-            edit.putString(key, value);
-            edit.commit();
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(s.equalsIgnoreCase("OK")){
-
-                if (BCrypt.checkpw(rDPWReference.get().dots,rDPWReference.get().hashedDots)) {
-
-                    if (rDPWReference.get().browser.equals("true")) {
-
-                        Uri uri = Uri.parse("http://www.google.com");
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        rDPWReference.get().startActivity(intent);
-
-                        save("browser", "");
-
-                    } else if (rDPWReference.get().camera.equals("true")) {
-
-                        Intent intent = new Intent(
-                                "android.media.action.IMAGE_CAPTURE");
-                        rDPWReference.get().startActivityForResult(intent, 0);
-                        save("camera", "");
-
-                    } else if (rDPWReference.get().pkg.equals("true")) {
-
-                        rDPWReference.get().sv = rDPWReference.get().getIntent().getStringExtra("sv");
-                        Intent i = new Intent();
-                        i.setClass(rDPWReference.get().getBaseContext(), LockerService.class);
-                        rDPWReference.get().startService(i);
-                        Intent LaunchIntent = rDPWReference.get().getPackageManager()
-                                .getLaunchIntentForPackage(rDPWReference.get().sv);
-                        LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        rDPWReference.get().startActivity(LaunchIntent);
-
-                    }
-
-                    rDPWReference.get().onCan();
-
-                }
-
-                else {
-
-                    Toast.makeText(rDPWReference.get().getApplicationContext(),
-                            "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }else{
-                Toast.makeText(rDPWReference.get(),"You Must Give Number to All Selected Dots!",Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
-
-    public static class ConfirmTask extends AsyncTask<String, String, String>{
-
-        WeakReference<RandomizedDotPattern> rDPWReference;
-
-        public ConfirmTask(RandomizedDotPattern context){
-            rDPWReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            if(rDPWReference.get() == null || rDPWReference.get().isFinishing()) {
-
-                return "";
-
-            }else {
-
-                int numDotSelected = 0;
-                for (Dot dot : rDPWReference.get().dotList) {
-                    if (dot.getDrawableId() == R.drawable.pin2) {
-                        numDotSelected++;
-                    }
-                }
-
-                if (numDotSelected >= 4) {
-
-                    rDPWReference.get().confirm.setText("OK");
-
-                    rDPWReference.get().cancel.setText("Back");
-                    rDPWReference.get().cancel.setVisibility(View.VISIBLE);
-                    rDPWReference.get().cancel.setEnabled(true);
-
-                    rDPWReference.get().flag = true;
-                    rDPWReference.get().textView.setText("Give Number to Dots");
-                    rDPWReference.get().counter = 0;
-
-                    for (int i = 0; i < rDPWReference.get().dotList.size(); i++) {
-
-                        if (rDPWReference.get().dotList.get(i).getDrawableId() == R.drawable.pin1) {
-//                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
-                            rDPWReference.get().dot.setInvisibility(View.INVISIBLE);
-                        } else {
-//                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
-                            rDPWReference.get().dot.setInvisibility(View.VISIBLE);
-                        }
-
-                        rDPWReference.get().dot.setSequence(0);
-                        rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
-
-                        rDPWReference.get().dotList.set(i, rDPWReference.get().dot);
-                    }
-
-                    return "OK";
-
-                } else {
-
-                    return "";
-
-                }
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(s.equalsIgnoreCase("OK")){
-
-                rDPWReference.get().dotAdapter.notifyDataSetChanged();
-
-            }else{
-
-                Toast.makeText(rDPWReference.get(),"Select At Least 4 Dots", Toast.LENGTH_SHORT).show();
-
-            }
-
-        }
-    }
-
-    public static class CancelTask extends AsyncTask<String,String,String>{
-
-        public WeakReference<RandomizedDotPattern> rDPWReference;
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            if(rDPWReference.get()==null||rDPWReference.get().isFinishing()){
-                return "";
-            }else{
-
-                rDPWReference.get().confirm.setText("OK");
-
-                rDPWReference.get().cancel.setEnabled(false);
-                rDPWReference.get().cancel.setVisibility(View.INVISIBLE);
-
-                rDPWReference.get().flag = false;
-
-                rDPWReference.get().textView.setText("Select Dots");
-
-                rDPWReference.get().counter=0;
-
-                for (int i = 0; i < rDPWReference.get().dotList.size(); i++) {
-                    if(rDPWReference.get().dotList.get(i).getInvisibility()==View.INVISIBLE){
-//                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
-                        rDPWReference.get().dot.setDrawableId(R.drawable.pin1);
-                    }else{
-//                            dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
-                        rDPWReference.get().dot.setDrawableId(R.drawable.pin2);
-                    }
-                    rDPWReference.get().dot.setSequence(0);
-                    rDPWReference.get().dot.setInvisibility(View.VISIBLE);
-                    rDPWReference.get().dotList.set(i,rDPWReference.get().dot);
-                }
-
-                return "OK";
-
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(s.equalsIgnoreCase("OK")){
-                rDPWReference.get().dotAdapter.notifyDataSetChanged();
-            }
 
         }
     }
