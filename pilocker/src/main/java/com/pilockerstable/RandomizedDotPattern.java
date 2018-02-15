@@ -144,6 +144,10 @@ public class RandomizedDotPattern extends Activity{
 
                 dotAdapter.notifyDataSetChanged();
 
+                if(auto.equals("true")&&flag){
+                    authentication("dot");
+                }
+
             }
         });
 
@@ -160,27 +164,8 @@ public class RandomizedDotPattern extends Activity{
             public void onClick(View v) {
 
                 if(flag){
-                    StringBuilder sb = new StringBuilder(numOfRows*numOfColumns);
-                    dots = "";
 
-                    int sumDotSelected=0;
-
-                    for (Dot dot : dotList) {
-                        sb.append(dot.getSequence());
-                        if (dot.getInvisibility()==View.VISIBLE){
-                            sumDotSelected++;
-                        }
-                    }
-
-                    if(sumDotSelected==counter){
-
-                        dots = sb.toString();
-
-                        authentication();
-
-                    }else{
-                        Toast.makeText(RandomizedDotPattern.this,"You Must Give Number to All Selected Dots!",Toast.LENGTH_SHORT).show();
-                    }
+                    authentication("confirm");
 
                 }else{
 
@@ -337,46 +322,71 @@ public class RandomizedDotPattern extends Activity{
         finish();
     }
 
-    public void authentication(){
+    public void authentication(String clickedFrom){
 
-        if (BCrypt.checkpw(dots,hashedDots)) {
+        StringBuilder sb = new StringBuilder(numOfRows*numOfColumns);
+        dots = "";
 
-            if (browser.equals("true")) {
+        int sumDotSelected=0;
 
-                Uri uri = Uri.parse("http://www.google.com");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+        for (Dot dot : dotList) {
+            sb.append(dot.getSequence());
+            if (dot.getInvisibility()==View.VISIBLE){
+                sumDotSelected++;
+            }
+        }
 
-                save("browser", "");
+        if(sumDotSelected==counter){
 
-            } else if (camera.equals("true")) {
+            dots = sb.toString();
 
-                Intent intent = new Intent(
-                        "android.media.action.IMAGE_CAPTURE");
-                startActivityForResult(intent, 0);
-                save("camera", "");
+            if (BCrypt.checkpw(dots,hashedDots)) {
 
-            } else if (pkg.equals("true")) {
+                if (browser.equals("true")) {
 
-                sv = getIntent().getStringExtra("sv");
-                Intent i = new Intent();
-                i.setClass(getBaseContext(), LockerService.class);
-                startService(i);
-                Intent LaunchIntent = getPackageManager()
-                        .getLaunchIntentForPackage(sv);
-                LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(LaunchIntent);
+                    Uri uri = Uri.parse("http://www.google.com");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+
+                    save("browser", "");
+
+                } else if (camera.equals("true")) {
+
+                    Intent intent = new Intent(
+                            "android.media.action.IMAGE_CAPTURE");
+                    startActivityForResult(intent, 0);
+                    save("camera", "");
+
+                } else if (pkg.equals("true")) {
+
+                    sv = getIntent().getStringExtra("sv");
+                    Intent i = new Intent();
+                    i.setClass(getBaseContext(), LockerService.class);
+                    startService(i);
+                    Intent LaunchIntent = getPackageManager()
+                            .getLaunchIntentForPackage(sv);
+                    LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(LaunchIntent);
+
+                }
+
+                onCan();
 
             }
 
-            onCan();
+            else {
 
-        }
+                if(clickedFrom.equalsIgnoreCase("confirm")){
+                    Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+                }
 
-        else {
+            }
 
-            Toast.makeText(getApplicationContext(),
-                    "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+        }else{
+
+            if(clickedFrom.equalsIgnoreCase("confirm")){
+                Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+            }
 
         }
 

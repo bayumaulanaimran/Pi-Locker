@@ -454,6 +454,10 @@ public class MainActivity extends ActionBarActivity {
 
 											save("numOfColumns", Integer.parseInt(number));
 											save("hashedDots","");
+											save("pin","");
+
+											skip.setEnabled(false);
+											autoy.setEnabled(false);
 
 											updateNumColumnsAndRows();
 										}
@@ -497,6 +501,10 @@ public class MainActivity extends ActionBarActivity {
 
 							save("numOfColumns", Integer.parseInt(number));
 							save("hashedDots","");
+							save("pin","");
+
+							skip.setEnabled(false);
+							autoy.setEnabled(false);
 
 							updateNumColumnsAndRows();
 						}
@@ -512,7 +520,7 @@ public class MainActivity extends ActionBarActivity {
 				if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set Number of Rows")
-							.setMessage("Setting number of rows will reset Dots Pattern \nAre you sure to set number of rows?")
+							.setMessage("Setting number of rows will reset Security \nAre you sure to set number of rows?")
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
@@ -540,6 +548,10 @@ public class MainActivity extends ActionBarActivity {
 
 											save("numOfRows", Integer.parseInt(number));
 											save("hashedDots","");
+											save("pin","");
+
+											skip.setEnabled(false);
+											autoy.setEnabled(false);
 
 											updateNumColumnsAndRows();
 										}
@@ -583,6 +595,10 @@ public class MainActivity extends ActionBarActivity {
 
 							save("numOfRows", Integer.parseInt(number));
 							save("hashedDots","");
+							save("pin","");
+
+							skip.setEnabled(false);
+							autoy.setEnabled(false);
 
 							updateNumColumnsAndRows();
 						}
@@ -944,13 +960,13 @@ public class MainActivity extends ActionBarActivity {
 
 		cost = getOptimalBcryptCostParameter(250);
 
-		if (Pass.equals("") && Pin.equals("")) {
+		if (Pass.equals("") && Pin.equals("") && hashedDots.equals("")) {
 
 			autoy.setEnabled(false);
 
 		}
 
-		if (Pass.equals("") && Pin.equals("")) {
+		if (Pass.equals("") && Pin.equals("") && hashedDots.equals("")) {
 
 			skip.setEnabled(false);
 
@@ -1121,6 +1137,8 @@ public class MainActivity extends ActionBarActivity {
 			case REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN:
 
 				save("hashedDots",BCrypt.hashpw(data.getStringExtra("dots"),BCrypt.gensalt(cost)));
+				skip.setEnabled(true);
+				autoy.setEnabled(true);
 
 				break;
 
