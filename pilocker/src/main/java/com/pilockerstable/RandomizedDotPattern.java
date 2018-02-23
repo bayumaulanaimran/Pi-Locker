@@ -53,16 +53,16 @@ public class RandomizedDotPattern extends Activity{
 
     String dots, hashedDots;
 
-    boolean flag, randomBoolean;
+    boolean flag;
 
-    int numOfRows, numOfColumns, counter;
+    int numOfRows, numOfColumns, counter, tryCounter, emergencyCounter;
 
     SharedPreferences sec;
 
     Runnable runnable;
     Window window ;
 
-    String camera, lock, browser, pin, pkg, sv, img, auto;
+    String camera, lock, browser, pin, pkg, sv, img, auto, emergency;
 
     private Handler mainhandler;
     private HomeKeyLocker mHomeKeyLocker;
@@ -72,8 +72,6 @@ public class RandomizedDotPattern extends Activity{
 
     boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
     boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-
-    Random rd;
 
     @SuppressLint({ "HandlerLeak", "SimpleDateFormat" })
     @Override
@@ -90,9 +88,8 @@ public class RandomizedDotPattern extends Activity{
 
         flag=false;
         counter = 0;
-
-        rd = new Random();
-        randomBoolean = rd.nextBoolean();
+        tryCounter = 0;
+        emergencyCounter = 0;
 
         dotList = randomizeDots(numOfRows,numOfColumns);
 
@@ -169,35 +166,22 @@ public class RandomizedDotPattern extends Activity{
 
                 }else{
 
-                    int numDotSelected = 0;
-                    for (Dot dot : dotList) {
-                        if(dot.getDrawableId()==R.drawable.pin2){
-                            numDotSelected++;
+                    confirm.setText("OK");
+
+                    cancel.setText("Back");
+                    cancel.setVisibility(View.VISIBLE);
+                    cancel.setEnabled(true);
+
+                    flag = true;
+                    textView.setText("Give Number to Each Dots");
+                    counter=0;
+
+                    for (int i = 0; i < dotList.size(); i++) {
+                        if(dotList.get(i).getDrawableId()==R.drawable.pin1){
+                            dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+                        }else{
+                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
                         }
-                    }
-
-                    if(numDotSelected>=4){
-
-                        confirm.setText("OK");
-
-                        cancel.setText("Back");
-                        cancel.setVisibility(View.VISIBLE);
-                        cancel.setEnabled(true);
-
-                        flag = true;
-                        textView.setText("Give Number to Dots");
-                        counter=0;
-
-                        for (int i = 0; i < dotList.size(); i++) {
-                            if(dotList.get(i).getDrawableId()==R.drawable.pin1){
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
-                            }else{
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
-                            }
-                        }
-
-                    }else{
-                        Toast.makeText(RandomizedDotPattern.this,"Select At Least 4 Dots", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -233,6 +217,19 @@ public class RandomizedDotPattern extends Activity{
 
                 }
 
+            }
+        });
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(emergency.equals("true")){
+                    emergencyCounter++;
+                    if(emergencyCounter==numOfColumns||emergencyCounter==numOfRows){
+                        Toast.makeText(RandomizedDotPattern.this,"Emergency Unlock Activated!",Toast.LENGTH_SHORT).show();
+                        onCan();
+                    }
+                }
             }
         });
 
@@ -279,6 +276,7 @@ public class RandomizedDotPattern extends Activity{
         pkg = sec.getString("pkg", "false");
         img = sec.getString("img", "");
         pin = sec.getString("pin", "");
+        emergency = sec.getString("emergencyb", "false");
         browser = sec.getString("browser", "");
         camera = sec.getString("camera", "");
         lock = sec.getString("lock", "");
@@ -336,7 +334,7 @@ public class RandomizedDotPattern extends Activity{
             }
         }
 
-        if(sumDotSelected==counter){
+        if(sumDotSelected==counter && sumDotSelected != 0){
 
             dots = sb.toString();
 
@@ -376,8 +374,48 @@ public class RandomizedDotPattern extends Activity{
 
             else {
 
-                if(clickedFrom.equalsIgnoreCase("confirm")){
-                    Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+                tryCounter++;
+
+                if(tryCounter>=3){
+
+                    confirm.setText("OK");
+                    confirm.setEnabled(false);
+                    confirm.setVisibility(View.INVISIBLE);
+
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
+
+                    gridView.setClickable(false);
+                    gridView.setEnabled(false);
+                    gridView.setVisibility(View.INVISIBLE);
+
+                    counter=0;
+                    tryCounter = 0;
+                    flag = false;
+
+                    for (int i = 0; i < dotList.size(); i++) {
+
+                        if(dotList.get(i).getInvisibility()==View.INVISIBLE){
+                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                        }else{
+                            dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
+                        }
+
+                    }
+
+                    dotAdapter.notifyDataSetChanged();
+
+                    TryInNSecondsTask TryInNSecondsTask = new TryInNSecondsTask(RandomizedDotPattern.this);
+
+                    TryInNSecondsTask.execute(30);
+
+                }else{
+
+                    if(sumDotSelected==0){
+                        Toast.makeText(this,"You did'nt give number to any dots!",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -385,7 +423,7 @@ public class RandomizedDotPattern extends Activity{
         }else{
 
             if(clickedFrom.equalsIgnoreCase("confirm")){
-                Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "You Must Give a Number to Each Selected Dots!", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -393,9 +431,14 @@ public class RandomizedDotPattern extends Activity{
     }
 
     public ArrayList<Dot> randomizeDots(int numRows, int numColumns){
+
         ArrayList<Dot> arrayDots = new ArrayList<>(numColumns*numRows);
 
-        for (int i = 0; i < numRows*numColumns; i++) {
+        Random rd = new Random();
+
+        boolean randomBoolean;
+
+        for (int i = 0; i < numColumns*numRows; i++) {
             randomBoolean = rd.nextBoolean();
             if(randomBoolean){
                 arrayDots.add(new Dot(R.drawable.pin2,0,View.VISIBLE));
@@ -405,6 +448,7 @@ public class RandomizedDotPattern extends Activity{
         }
 
         return arrayDots;
+
     }
 
     public void fullScreen(){

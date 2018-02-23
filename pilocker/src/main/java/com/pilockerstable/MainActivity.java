@@ -393,14 +393,14 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				if(!spf.getString("pin","").equalsIgnoreCase("")){
 					new AlertDialog.Builder(MainActivity.this)
-							.setTitle("Set Dots Pattern")
-							.setMessage("Setting dots pattern will reset PIN \nAre you sure to set dots pattern?")
+							.setTitle("Set Dot Pattern")
+							.setMessage("Setting dot pattern will reset PIN \nAre you sure to set dots pattern?")
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
 									save("pin","");
 
-									startSetDotPattern();
+									startSetDotsPattern();
 								}
 							})
 
@@ -415,7 +415,7 @@ public class MainActivity extends ActionBarActivity {
 							}).setIcon(R.drawable.ic_launcher).show();
 
 				}else{
-					startSetDotPattern();
+					startSetDotsPattern();
 				}
 			}
 		});
@@ -426,7 +426,7 @@ public class MainActivity extends ActionBarActivity {
 				if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Set Number of Columns")
-							.setMessage("Setting number of columns will reset Dots Pattern \nAre you sure to set number of columns?")
+							.setMessage("Setting number of columns will reset Security \nAre you sure to set number of columns?")
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
@@ -613,7 +613,7 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View arg0) {
 
 				new AlertDialog.Builder(MainActivity.this)
-						.setTitle("Reset Pin/Password/Dots")
+						.setTitle("Reset Pin/Password/Dot Pattern")
 						.setMessage("Are you sure you want to reset security? \nthis will leave your phone UNSECURED")
 						.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
 
@@ -718,9 +718,9 @@ public class MainActivity extends ActionBarActivity {
 					save("secret", "true");
 
 					new AlertDialog.Builder(MainActivity.this)
-							.setTitle("Secret Emergency unlock")
-							.setMessage("This Feature was made to make you unlock screen when you are in hurry, also a hidden way to unlock if you are bored of unlock gesture\n\n\nUsage:\n\n-Press on the clock text.\n-Voila\n\n\nNote:\nThis will not work when the pin security is active")
-							.setPositiveButton("Activate", new DialogInterface.OnClickListener() {
+							.setTitle("Secret Emergency Unlock")
+							.setMessage("This feature was made to give you an easier way to unlock screen when you are in the following situations:\n1. You're in a hurry.\n2. You're in an emergency.\n3. You're in danger.\n4. You forgot your dots pattern.\n\nUsage:\n\nA. Gesture\n-Press on the clock text.\n\nB. Dots Pattern\n-Press on the text multiple times as much as the number of columns or rows of dots.\n\nNote:\n1. This won't work when the pin security is active.\n2. Emergency unlock method in gesture mode (Usage A. Gesture) won't work if Dots Pattern is active.")
+							.setPositiveButton("Activate!", new DialogInterface.OnClickListener() {
 								
 										public void onClick(DialogInterface dialog, int which) {
 
@@ -730,6 +730,16 @@ public class MainActivity extends ActionBarActivity {
 									})
 
 									
+							.setNegativeButton("No", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									secret.setChecked(false);
+
+									save("emergency", "false");
+									save("emergencyb", "false");
+								}
+							})
+							.setCancelable(false)
 							.show();
 
 				} else {
@@ -958,7 +968,7 @@ public class MainActivity extends ActionBarActivity {
 		numOfRows = spf.getInt("numOfRows",3);
 		hashedDots = spf.getString("hashedDots","");
 
-		cost = getOptimalBcryptCostParameter(250);
+		cost = getOptimalBCryptCostParameter(150);
 
 		if (Pass.equals("") && Pin.equals("") && hashedDots.equals("")) {
 
@@ -1062,7 +1072,7 @@ public class MainActivity extends ActionBarActivity {
 		startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
 	}
 
-	private void startSetDotPattern(){
+	private void startSetDotsPattern(){
 
 		Intent intent = new Intent(this, SetRandomizedDotPattern.class);
 
@@ -1073,18 +1083,16 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	public int getOptimalBcryptCostParameter(long min_ms) {
-		int c=10;
+	public int getOptimalBCryptCostParameter(long min_ms) {
 		for (int i = 5; i < 31; i++) {
 			long time_start = System.currentTimeMillis();
 			BCrypt.hashpw("test",BCrypt.gensalt(i));
 			long time_end = System.currentTimeMillis();
 			if ((time_end - time_start) * 1000 > min_ms) {
-				c=i;
-				break;
+				return i;
 			}
 		}
-		return c;
+		return 10;
 	}
 
 	@Override
