@@ -19,6 +19,11 @@ public class DotAdapter extends BaseAdapter {
     Context mContext;
     ArrayList<Dot> list;
 
+    public DotAdapter(Context context, ArrayList<Dot> array) {
+        this.mContext = context;
+        this.list = array;
+    }
+
     @Override
     public int getCount() {
         return list.size();
@@ -36,42 +41,36 @@ public class DotAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // 1
-//        final Book book = books[position];
 
-        // 2
+        // 1
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.dot, null);
         }
 
-        // 3
+        // 2
         final ImageView imageView = (ImageView)convertView.findViewById(R.id.imageviewBG);
         final TextView textView = (TextView)convertView.findViewById(R.id.textviewDot);
 
-        // 4
+        // 3
         imageView.setImageResource(list.get(position).getDrawableId());
+
         if(list.get(position).getSequence()<1){
             textView.setText("");
         }else{
             textView.setText(String.valueOf(list.get(position).getSequence()));
         }
+
         if(list.get(position).getInvisibility()==View.INVISIBLE){
             textView.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.INVISIBLE);
-            convertView.setEnabled(false);
         }else{
             textView.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
-            convertView.setEnabled(true);
         }
 
+        // 4
         return convertView;
-    }
-
-    public DotAdapter(Context context, ArrayList<Dot> array) {
-        this.mContext = context;
-        this.list = array;
     }
 
 }
