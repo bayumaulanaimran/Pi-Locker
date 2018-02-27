@@ -73,6 +73,7 @@
         </activity>
         <activity
             android:name=".PinActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_pin"
@@ -81,6 +82,7 @@
         </activity>
         <activity
             android:name=".RandomizedDotPattern"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_pin"
@@ -89,6 +91,7 @@
         </activity>
         <activity
             android:name=".SetRandomizedDotPattern"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_pin"
