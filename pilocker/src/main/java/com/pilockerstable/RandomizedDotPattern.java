@@ -99,7 +99,7 @@ public class RandomizedDotPattern extends Activity{
 
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeLayoutButton);
         int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
-        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns+10,dimension*(numOfRows+1)));
+        rl.setLayoutParams(new LinearLayout.LayoutParams(dimension*numOfColumns,dimension*(numOfRows+1)));
 
         dotAdapter = new DotAdapter(this,dotList);
 

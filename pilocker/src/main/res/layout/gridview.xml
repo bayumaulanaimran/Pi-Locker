@@ -18,18 +18,17 @@
         android:id="@+id/relativeLayoutButton"
         android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
         android:layout_height="wrap_content">
 
         <GridView
             android:id="@+id/gridview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:columnWidth="60dp"
             android:numColumns="3"
-            android:stretchMode="none"
+            android:stretchMode="spacingWidthUniform"
             />
 
         <Button
