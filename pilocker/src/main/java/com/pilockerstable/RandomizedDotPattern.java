@@ -51,7 +51,7 @@ public class RandomizedDotPattern extends Activity{
     ArrayList<Dot> dotList;
     DotAdapter dotAdapter;
 
-    String dots, hashedDots;
+    String dots, hashedDots, randomizeDotsStatus;
 
     boolean flag;
 
@@ -91,7 +91,11 @@ public class RandomizedDotPattern extends Activity{
         tryCounter = 0;
         emergencyCounter = 0;
 
-        dotList = randomizeDots(numOfRows,numOfColumns);
+        if(randomizeDotsStatus.equals("true")){
+            dotList = randomizeDots(numOfRows,numOfColumns);
+        }else{
+            dotList = initializeDots(numOfRows,numOfColumns);
+        }
 
         gridView = (GridView)findViewById(R.id.gridview);
 
@@ -286,6 +290,8 @@ public class RandomizedDotPattern extends Activity{
         numOfRows = sec.getInt("numOfRows",3);
         hashedDots = sec.getString("hashedDots","");
 
+        randomizeDotsStatus = sec.getString("randomizeDotsStatus","true");
+
     }
 
     public void save(String key, String value) {
@@ -449,6 +455,16 @@ public class RandomizedDotPattern extends Activity{
 
         return arrayDots;
 
+    }
+
+    public ArrayList<Dot> initializeDots(int numRows, int numColumns){
+        ArrayList<Dot> arrayDots = new ArrayList<>(numRows*numColumns);
+
+        for (int i = 0; i < numColumns*numRows; i++) {
+            arrayDots.add(new Dot(R.drawable.pin1,0,View.VISIBLE));
+        }
+
+        return arrayDots;
     }
 
     public void fullScreen(){

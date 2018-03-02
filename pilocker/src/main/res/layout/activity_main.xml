@@ -56,7 +56,7 @@
                 android:layout_marginBottom="7dp"
                 android:layout_marginLeft="15dp"
                 android:button="@drawable/selector3"
-                android:text=" Skip gestures on security"
+                android:text=" Skip Gestures on Security"
                 android:textColor="#000000" />
 
             <CheckBox
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:button="@drawable/selector3"
-                android:text=" Auto-Unlock Pin"
+                android:text=" Auto-Unlock"
                 android:textColor="#000000" />
 
             <TextView
@@ -112,10 +112,20 @@
                 android:layout_height="30dp"
                 android:background="#ffffff"
                 android:gravity="fill_vertical"
-                android:text="   PIN Security"
+                android:text="   Security"
                 android:textColor="#00BCD4"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkBoxPin"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="15sp"
+                android:button="@drawable/selector3"
+                android:text=" PIN"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/button1"
@@ -123,55 +133,8 @@
                 android:layout_height="50dp"
                 android:background="@drawable/selector2"
                 android:gravity="center_vertical"
-                android:text="     Set Pin"
+                android:text="            Set"
                 android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:background="#ffffff"
-                android:gravity="fill_vertical"
-                android:text="   Dots Pattern Security"
-                android:textColor="#00BCD4"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/buttonSetDots"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/selector2"
-                android:gravity="center_vertical"
-                android:text="     Set Dots Pattern"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/buttonSetColumns"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/selector2"
-                android:gravity="center_vertical"
-                android:text="     Number of Columns = 3"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/buttonSetRows"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/selector2"
-                android:gravity="center_vertical"
-                android:text="     Number of Rows = 3"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:background="#ffffff"
-                android:gravity="fill_vertical"
-                android:text="   Reset Security"
-                android:textColor="#00BCD4"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button2"
@@ -179,7 +142,112 @@
                 android:layout_height="50dp"
                 android:background="@drawable/selector2"
                 android:gravity="center_vertical"
-                android:text="     Reset"
+                android:text="            Reset"
+                android:textColor="#000000" />
+
+            <CheckBox
+                android:id="@+id/checkBoxDots"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="15sp"
+                android:button="@drawable/selector3"
+                android:text=" Dots Pattern"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/buttonSetDots"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/selector2"
+                android:gravity="center_vertical"
+                android:text="            Set"
+                android:textColor="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutColumns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="            NUMBER OF COLUMNS"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/textViewColumns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:text="3"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutRows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="            NUMBER OF ROWS"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/textViewRows"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:text="3"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="            RANDOMIZE"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    android:layout_alignParentLeft="true"/>
+
+                <Switch
+                    android:id="@+id/randomizeDotsToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textOff="OFF"
+                    android:textOn="ON"
+                    android:focusable="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    />
+
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/buttonResetDots"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/selector2"
+                android:gravity="center_vertical"
+                android:text="            Reset"
                 android:textColor="#000000" />
 
             <TextView
