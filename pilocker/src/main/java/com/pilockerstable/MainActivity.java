@@ -478,8 +478,6 @@ public class MainActivity extends ActionBarActivity {
 	public void resetDotsPattern(){
 		save("hashedDots", "");
 
-		skip.setEnabled(false);
-		autoy.setEnabled(false);
 
 		setDotsSecurityInterfaceVisibility(false);
 	}
@@ -487,8 +485,6 @@ public class MainActivity extends ActionBarActivity {
 	public void resetPIN(){
 		save("pin", "");
 
-		skip.setEnabled(false);
-		autoy.setEnabled(false);
 
 		setPINSecurityInterfaceVisibility(false);
 	}
@@ -512,7 +508,7 @@ public class MainActivity extends ActionBarActivity {
 				if(randomizeDotsToggle.isChecked()){
 					new AlertDialog.Builder(MainActivity.this)
 							.setTitle("Randomize Dots Pattern")
-							.setMessage("Mode:\n\n1. ON\nDots WILL BE RANDOMIZED in Lockscreen.\n\n2. OFF\nDots WON'T BE RANDOMIZED in Lockscreen.\n\nNote:\n1. This feature is intended to minimalize touching in constant place that can cause smudge on phone screen when you unlock your phone.\n2. This feature is intended to give you protection against smudge attack that caused by constant smudge on your lockscreen.\n3. Smudge attack is an attack to your security by guessing the probable key to crack your lock screen, from the smudge on your touch screen.\n4. Smudge Attacker can get through your security to gain access inside of your smart phone system, and then leak or steal your private information/privacy.")
+							.setMessage("Mode:\n\n1. ON!\nEach Dot Status (selected or not) WILL BE RANDOMIZED in Lockscreen.\n\n2. OFF!\nEach Dot Status WON'T BE RANDOMIZED in Lockscreen.\n\nNote:\n1. This feature is intended to minimalize touching in constant place that can cause smudge on phone screen when you unlock your phone.\n2. This feature is intended to give you protection against smudge attack that caused by constant smudge on your lockscreen.\n3. Smudge attack is an attack to your security by guessing the probable key to crack your lock screen, from the smudge on your touch screen.\n4. Smudge Attacker can get through your security to gain access inside of your smart phone system, and then leak or steal your private information/privacy.")
 							.setPositiveButton("ON!", new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog, int which) {
@@ -557,6 +553,11 @@ public class MainActivity extends ActionBarActivity {
 
 										checkBoxDots.setChecked(false);
 
+
+										skip.setEnabled(false);
+										autoy.setEnabled(false);
+
+
 										setPINSecurityInterfaceVisibility(true);
 
 									}
@@ -588,6 +589,9 @@ public class MainActivity extends ActionBarActivity {
 									public void onClick(DialogInterface dialog, int which) {
 
 										resetPIN();
+
+										skip.setEnabled(false);
+										autoy.setEnabled(false);
 
 									}
 								})
@@ -623,6 +627,11 @@ public class MainActivity extends ActionBarActivity {
 
 										checkBoxPIN.setChecked(false);
 
+
+										skip.setEnabled(false);
+										autoy.setEnabled(false);
+
+
 										setDotsSecurityInterfaceVisibility(true);
 									}
 								})
@@ -653,6 +662,11 @@ public class MainActivity extends ActionBarActivity {
 									public void onClick(DialogInterface dialog, int which) {
 
 										resetDotsPattern();
+
+
+										skip.setEnabled(false);
+										autoy.setEnabled(false);
+
 
 									}
 								})
@@ -739,7 +753,7 @@ public class MainActivity extends ActionBarActivity {
 		button2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				resetPIN();
+				checkBoxPIN.toggle();
 			}
 
 		});
@@ -747,7 +761,7 @@ public class MainActivity extends ActionBarActivity {
 		resetDots.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				resetDotsPattern();
+				checkBoxDots.toggle();
 			}
 		});
 
