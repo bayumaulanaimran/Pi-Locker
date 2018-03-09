@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Modified and Enhanced by :\n\n- Bayu Maulana Imran\n\nGithub : bayumaulanaimran\n\nList of Added Features :\n1. Dots Pattern Lock Screen.\n2. Set Dots Pattern\n3. Set Number of Columns for Dots Pattern.\n4. Set Number of Rows for Dots Pattern.\n5. Emergency Unlock for Dots Pattern.\n6. Set Emergency Unlock for Dots Pattern.\n\nThis enhancement is only for a thesis experiment that check the effectiveness of randomized dots pattern scheme against smudge and brute force attack."
+                android:text="Modified and Enhanced by :\n\n- Bayu Maulana Imran\n\nGithub : bayumaulanaimran\n\nList of Added Features :\n1. Dots Pattern Lock Screen.\n2. Set Dots Pattern\n3. Set Number of Columns for Dots Pattern.\n4. Set Number of Rows for Dots Pattern.\n5. Randomize Dots Pattern\n6. Emergency Unlock for Dots Pattern.\n7. Set Emergency Unlock for Dots Pattern.\n\nThis enhancement is made only for a thesis experiment that focused on the effectiveness of randomized dots pattern scheme against smudge and brute force attack."
                 android:textColor="#000000" />
         </LinearLayout>
     </ScrollView>

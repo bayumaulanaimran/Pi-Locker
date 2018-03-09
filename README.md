@@ -1,4 +1,4 @@
-Pi-Locker (With Randomized Dot Pattern Scheme)
+Pi-Locker
 =========
 
 **A smart and clean lock screen replacement for android with unlocking gestures**
@@ -80,3 +80,27 @@ The only lock screen that is professional and open sourced, you cannot only cust
 **XDA Thread :**
 
 >>http://forum.xda-developers.com/showthread.php?p=53218143
+
+
+Pi-Locker (With Randomized Dot Pattern Scheme)
+=========
+
+**Modified and Enhanced features :**
+
+>>-Dots Pattern
+
+>>-Randomize Dots
+
+>>-Set Dots Pattern
+
+>>-Emergency Unlock for Dots Pattern
+    
+>>-Set Emergency Unlock for Dots Pattern
+    
+>>-Set Rows of Dots Pattern
+    
+>>-Set Columns of Dots Pattern
+    
+>>-Reset Dots Pattern
+    
+>>-"Try in 30 Seconds" Trial
