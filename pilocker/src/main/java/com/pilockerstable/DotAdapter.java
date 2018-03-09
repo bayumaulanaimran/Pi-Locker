@@ -40,6 +40,16 @@ public class DotAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        // according to position return here true or false to enable or disable respectively
+        if(list.get(position).getInvisibility()==View.VISIBLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // 1
@@ -61,13 +71,7 @@ public class DotAdapter extends BaseAdapter {
             textView.setText(String.valueOf(list.get(position).getSequence()));
         }
 
-        if(list.get(position).getInvisibility()==View.INVISIBLE){
-            textView.setVisibility(View.INVISIBLE);
-            imageView.setVisibility(View.INVISIBLE);
-        }else{
-            textView.setVisibility(View.VISIBLE);
-            imageView.setVisibility(View.VISIBLE);
-        }
+        convertView.setVisibility(list.get(position).getInvisibility());
 
         // 4
         return convertView;

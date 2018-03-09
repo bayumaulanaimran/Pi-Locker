@@ -51,7 +51,7 @@ public class SetRandomizedDotPattern extends Activity{
 
         dotList = new ArrayList<>(numOfRows*numOfColumns);
 
-        Dot dot = new Dot(R.drawable.pin1, 0, View.VISIBLE);
+        Dot dot = new Dot(R.drawable.selector, 0, View.VISIBLE);
 
         for (int i = 0; i < numOfRows*numOfColumns; i++) {
             dotList.add(dot);
@@ -84,9 +84,9 @@ public class SetRandomizedDotPattern extends Activity{
 
                             for (int i = 0; i < dotList.size(); i++) {
                                 if(i==position){
-                                    dotList.set(i,new Dot(R.drawable.pin1,0, View.VISIBLE));
+                                    dotList.set(i,new Dot(R.drawable.selector,0, View.VISIBLE));
                                 }else if(dotList.get(i).getSequence()>seqNow){
-                                    dotList.set(i,new Dot(R.drawable.pin1,dotList.get(i).getSequence()-1, View.VISIBLE));
+                                    dotList.set(i,new Dot(R.drawable.selector,dotList.get(i).getSequence()-1, View.VISIBLE));
                                 }
                             }
 
@@ -96,10 +96,10 @@ public class SetRandomizedDotPattern extends Activity{
                     }
 
                 }else{
-                    if(dotList.get(position).getDrawableId()==R.drawable.pin1){
+                    if(dotList.get(position).getDrawableId()==R.drawable.selector){
                         dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
                     }else{
-                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                        dotList.set(position,new Dot(R.drawable.selector,0,View.VISIBLE));
                     }
                 }
 
@@ -124,9 +124,9 @@ public class SetRandomizedDotPattern extends Activity{
 
                     int sumDotSelected=0;
 
-                    for (Dot dot : dotList) {
-                        sb.append(dot.getSequence());
-                        if (dot.getInvisibility()==View.VISIBLE){
+                    for (int i = 0; i < numOfColumns*numOfRows; i++) {
+                        sb.append(dotList.get(i).getSequence());
+                        if (dotList.get(i).getInvisibility()==View.VISIBLE){
                             sumDotSelected++;
                         }
                     }
@@ -134,7 +134,7 @@ public class SetRandomizedDotPattern extends Activity{
                     if(sumDotSelected==counter){
 
                         dots = sb.toString();
-                        Toast.makeText(SetRandomizedDotPattern.this,dots,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetRandomizedDotPattern.this,"Dots Saved!",Toast.LENGTH_LONG).show();
 
                         Intent i = new Intent();
                         i.putExtra("dots", dots);
@@ -157,16 +157,16 @@ public class SetRandomizedDotPattern extends Activity{
                     if(numDotSelected>=4){
 
                         confirm.setText("OK");
-                        cancel.setText("Back");
+                        cancel.setText("BACK");
                         flag = true;
                         textView.setText("Give Number to Dots");
                         counter=0;
 
                         for (int i = 0; i < dotList.size(); i++) {
-                            if(dotList.get(i).getDrawableId()==R.drawable.pin1){
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+                            if(dotList.get(i).getDrawableId()==R.drawable.selector){
+                                dotList.set(i,new Dot(R.drawable.selector,0,View.INVISIBLE));
                             }else{
-                                dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                                dotList.set(i,new Dot(R.drawable.selector,0,View.VISIBLE));
                             }
                         }
                     }else{
@@ -184,13 +184,13 @@ public class SetRandomizedDotPattern extends Activity{
             public void onClick(View v) {
                 if(flag){
                     confirm.setText("OK");
-                    cancel.setText("Cancel");
+                    cancel.setText("CANCEL");
                     flag = false;
                     textView.setText("Select Dots");
                     counter=0;
                     for (int i = 0; i < dotList.size(); i++) {
                         if(dotList.get(i).getInvisibility()==View.INVISIBLE){
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            dotList.set(i,new Dot(R.drawable.selector,0,View.VISIBLE));
                         }else{
                             dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
                         }

@@ -124,9 +124,9 @@ public class RandomizedDotPattern extends Activity{
 
                             for (int i = 0; i < dotList.size(); i++) {
                                 if(i==position){
-                                    dotList.set(i,new Dot(R.drawable.pin1,0, View.VISIBLE));
+                                    dotList.set(i,new Dot(R.drawable.selector,0, View.VISIBLE));
                                 }else if(dotList.get(i).getSequence()>seqNow){
-                                    dotList.set(i,new Dot(R.drawable.pin1,dotList.get(i).getSequence()-1, View.VISIBLE));
+                                    dotList.set(i,new Dot(R.drawable.selector,dotList.get(i).getSequence()-1, View.VISIBLE));
                                 }
                             }
 
@@ -136,10 +136,10 @@ public class RandomizedDotPattern extends Activity{
                     }
 
                 }else{
-                    if(dotList.get(position).getDrawableId()==R.drawable.pin1){
+                    if(dotList.get(position).getDrawableId()==R.drawable.selector){
                         dotList.set(position,new Dot(R.drawable.pin2,0,View.VISIBLE));
                     }else{
-                        dotList.set(position,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                        dotList.set(position,new Dot(R.drawable.selector,0,View.VISIBLE));
                     }
                 }
 
@@ -172,7 +172,7 @@ public class RandomizedDotPattern extends Activity{
 
                     confirm.setText("OK");
 
-                    cancel.setText("Back");
+                    cancel.setText("BACK");
                     cancel.setVisibility(View.VISIBLE);
                     cancel.setEnabled(true);
 
@@ -181,10 +181,10 @@ public class RandomizedDotPattern extends Activity{
                     counter=0;
 
                     for (int i = 0; i < dotList.size(); i++) {
-                        if(dotList.get(i).getDrawableId()==R.drawable.pin1){
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.INVISIBLE));
+                        if(dotList.get(i).getDrawableId()==R.drawable.selector){
+                            dotList.set(i,new Dot(R.drawable.selector,0,View.INVISIBLE));
                         }else{
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            dotList.set(i,new Dot(R.drawable.selector,0,View.VISIBLE));
                         }
                     }
 
@@ -210,7 +210,7 @@ public class RandomizedDotPattern extends Activity{
                     for (int i = 0; i < dotList.size(); i++) {
 
                         if(dotList.get(i).getInvisibility()==View.INVISIBLE){
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            dotList.set(i,new Dot(R.drawable.selector,0,View.VISIBLE));
                         }else{
                             dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
                         }
@@ -402,7 +402,7 @@ public class RandomizedDotPattern extends Activity{
                     for (int i = 0; i < dotList.size(); i++) {
 
                         if(dotList.get(i).getInvisibility()==View.INVISIBLE){
-                            dotList.set(i,new Dot(R.drawable.pin1,0,View.VISIBLE));
+                            dotList.set(i,new Dot(R.drawable.selector,0,View.VISIBLE));
                         }else{
                             dotList.set(i,new Dot(R.drawable.pin2,0,View.VISIBLE));
                         }
@@ -417,11 +417,8 @@ public class RandomizedDotPattern extends Activity{
 
                 }else{
 
-                    if(sumDotSelected==0){
-                        Toast.makeText(this,"You did'nt give number to any dots!",Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getApplicationContext(), "Wrong! Try Again!", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -449,7 +446,7 @@ public class RandomizedDotPattern extends Activity{
             if(randomBoolean){
                 arrayDots.add(new Dot(R.drawable.pin2,0,View.VISIBLE));
             }else{
-                arrayDots.add(new Dot(R.drawable.pin1,0,View.VISIBLE));
+                arrayDots.add(new Dot(R.drawable.selector,0,View.VISIBLE));
             }
         }
 
@@ -461,7 +458,7 @@ public class RandomizedDotPattern extends Activity{
         ArrayList<Dot> arrayDots = new ArrayList<>(numRows*numColumns);
 
         for (int i = 0; i < numColumns*numRows; i++) {
-            arrayDots.add(new Dot(R.drawable.pin1,0,View.VISIBLE));
+            arrayDots.add(new Dot(R.drawable.selector,0,View.VISIBLE));
         }
 
         return arrayDots;
