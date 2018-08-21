@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,11 +21,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +37,7 @@ import java.util.Random;
  */
 
 @SuppressLint({ "SimpleDateFormat", "InlinedApi" })
-public class RandomizedDotPattern extends Activity{
+public class DotsPatternActivity extends Activity{
 
     TextView textView;
 
@@ -62,13 +59,10 @@ public class RandomizedDotPattern extends Activity{
     Runnable runnable;
     Window window ;
 
-    String camera, lock, browser, pin, pkg, sv, img, auto, emergency;
+    String camera, lock, browser, pkg, sv, img, auto, emergency;
 
     private Handler mainhandler;
     private HomeKeyLocker mHomeKeyLocker;
-
-    static Bitmap bmImg;
-    static TableLayout r0;
 
     boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
     boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
@@ -78,7 +72,7 @@ public class RandomizedDotPattern extends Activity{
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        stopService(new Intent(RandomizedDotPattern.this, LockerService.class));
+        stopService(new Intent(DotsPatternActivity.this, LockerService.class));
 
         loadlock();
 
@@ -230,7 +224,7 @@ public class RandomizedDotPattern extends Activity{
                 if(emergency.equals("true")){
                     emergencyCounter++;
                     if(emergencyCounter==numOfColumns||emergencyCounter==numOfRows){
-                        Toast.makeText(RandomizedDotPattern.this,"Emergency Unlock Activated!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DotsPatternActivity.this,"Emergency Unlock Activated!",Toast.LENGTH_SHORT).show();
                         onCan();
                     }
                 }
@@ -253,6 +247,11 @@ public class RandomizedDotPattern extends Activity{
             public void run() {
 
                 while (true) {
+
+                    if(emergencyCounter>0){
+                        emergencyCounter--;
+                    }
+
                     try {
 
                         Thread.sleep(1000);
@@ -307,6 +306,8 @@ public class RandomizedDotPattern extends Activity{
 
         mainhandler.removeCallbacksAndMessages(runnable);
 
+        System.gc();
+
         try {
 
             System.exit(0);
@@ -322,7 +323,7 @@ public class RandomizedDotPattern extends Activity{
     }
 
     public void onCan() {
-        startService(new Intent(RandomizedDotPattern.this, LockerService.class));
+        startService(new Intent(DotsPatternActivity.this, LockerService.class));
         finish();
     }
 
@@ -411,7 +412,7 @@ public class RandomizedDotPattern extends Activity{
 
                     dotAdapter.notifyDataSetChanged();
 
-                    TryInNSecondsTask TryInNSecondsTask = new TryInNSecondsTask(RandomizedDotPattern.this);
+                    TryInNSecondsTask TryInNSecondsTask = new TryInNSecondsTask(DotsPatternActivity.this);
 
                     TryInNSecondsTask.execute(30);
 

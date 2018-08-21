@@ -279,6 +279,9 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 						if (admin) {
 
+							startService(new Intent(Lock.this, LockerService.class));
+							finish();
+
 							// user should activate the device admin
 							policyManager.lockNow();
 
@@ -297,7 +300,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 		});
 
 		// This one controls the option of the emergency unlock
-		// only works if no pin is set
+		// only works if no pin and dots is set
 		Time.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -618,7 +621,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 
 			}else if(!hashedDots.equals("")&&Pin.equals("")){
 
-				startActivity(new Intent(Lock.this, RandomizedDotPattern.class));
+				startActivity(new Intent(Lock.this, DotsPatternActivity.class));
 				finish();
 
 			}
@@ -778,7 +781,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
 						}else if(!hashedDots.equals("")&&Pin.equals("")){
-							startActivity(new Intent(this, RandomizedDotPattern.class));
+							startActivity(new Intent(this, DotsPatternActivity.class));
 						}
 
 						onCan();
@@ -805,7 +808,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
 						}else if(!hashedDots.equals("")&&Pin.equals("")){
-							startActivity(new Intent(this, RandomizedDotPattern.class));
+							startActivity(new Intent(this, DotsPatternActivity.class));
 						}
 
 						save("camera", "true");
@@ -924,7 +927,7 @@ public class Lock extends Activity implements OnGesturePerformedListener {
 						if(hashedDots.equals("")&&!Pin.equals("")){
 							startActivity(new Intent(this, PinActivity.class));
 						}else if(!hashedDots.equals("")&&Pin.equals("")){
-							startActivity(new Intent(this, RandomizedDotPattern.class));
+							startActivity(new Intent(this, DotsPatternActivity.class));
 						}
 
 						save("browser", "true");

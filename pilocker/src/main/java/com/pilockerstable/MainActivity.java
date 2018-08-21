@@ -39,7 +39,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.almas.ShortcutSettings;
 
@@ -74,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 	public static final int REQUEST_CODE_GALLERY = 0x1;
 	public static final int REQUEST_CODE_TAKE_PICTURE = 0x2;
 	public static final int REQUEST_CODE_CROP_IMAGE = 0x3;
-	public static final int REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN = 0x4;
+	public static final int REQUEST_CODE_SET_DOTS_PATTERN = 0x4;
 	public final int CROP_FROM_CAMERA = 0;
 	
 	
@@ -230,12 +229,12 @@ public class MainActivity extends ActionBarActivity {
 
 	private void startSetDotsPattern(){
 
-		Intent intent = new Intent(this, SetRandomizedDotPattern.class);
+		Intent intent = new Intent(this, SetDotsPatternActivity.class);
 
 		intent.putExtra("numOfColumns",numOfColumns);
 		intent.putExtra("numOfRows",numOfRows);
 
-		startActivityForResult(intent, REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN);
+		startActivityForResult(intent, REQUEST_CODE_SET_DOTS_PATTERN);
 
 	}
 
@@ -705,7 +704,7 @@ public class MainActivity extends ActionBarActivity {
 				if (skip.getText().equals("1")) {
 
 					if(!spf.getString("hashedDots","").equalsIgnoreCase("")){
-						startActivity(new Intent(MainActivity.this, RandomizedDotPattern.class));
+						startActivity(new Intent(MainActivity.this, DotsPatternActivity.class));
 						finish();
 					}else if(!spf.getString("pin","").equalsIgnoreCase("")){
 						startActivity(new Intent(MainActivity.this, PinActivity.class));
@@ -1249,7 +1248,7 @@ public class MainActivity extends ActionBarActivity {
 			break;
 
 			//Set Pattern
-			case REQUEST_CODE_SET_RANDOMIZED_DOT_PATTERN:
+			case REQUEST_CODE_SET_DOTS_PATTERN:
 
 				save("hashedDots",BCrypt.hashpw(data.getStringExtra("dots"),BCrypt.gensalt(cost)));
 				skip.setEnabled(true);

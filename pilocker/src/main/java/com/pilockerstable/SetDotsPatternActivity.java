@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by MY PC on 29/01/2018.
  */
 
-public class SetRandomizedDotPattern extends Activity{
+public class SetDotsPatternActivity extends Activity{
 
     TextView textView;
 
@@ -134,7 +134,7 @@ public class SetRandomizedDotPattern extends Activity{
                     if(sumDotSelected==counter){
 
                         dots = sb.toString();
-                        Toast.makeText(SetRandomizedDotPattern.this,"Dots Saved!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(SetDotsPatternActivity.this,"Dots Saved!",Toast.LENGTH_LONG).show();
 
                         Intent i = new Intent();
                         i.putExtra("dots", dots);
@@ -142,7 +142,7 @@ public class SetRandomizedDotPattern extends Activity{
                         finish();
 
                     }else{
-                        Toast.makeText(SetRandomizedDotPattern.this,"You Must Give Number to All Selected Dots!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetDotsPatternActivity.this,"You Must Give Number to All Selected Dots!",Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
@@ -170,7 +170,7 @@ public class SetRandomizedDotPattern extends Activity{
                             }
                         }
                     }else{
-                        Toast.makeText(SetRandomizedDotPattern.this,"Select At Least 4 Dots", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetDotsPatternActivity.this,"Select At Least 4 Dots", Toast.LENGTH_SHORT).show();
                     }
 
                 }

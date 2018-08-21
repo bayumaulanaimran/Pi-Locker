@@ -1,9 +1,7 @@
 package com.pilockerstable;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -13,12 +11,12 @@ import java.lang.ref.WeakReference;
 
 public class TryInNSecondsTask extends AsyncTask<Integer,Integer,String> {
 
-    WeakReference<RandomizedDotPattern> rDPWReference;
+    WeakReference<DotsPatternActivity> rDPWReference;
 
     int count;
 
-    public TryInNSecondsTask(RandomizedDotPattern randomizedDotPattern){
-        rDPWReference = new WeakReference<RandomizedDotPattern>(randomizedDotPattern);
+    public TryInNSecondsTask(DotsPatternActivity dotsPatternActivity){
+        rDPWReference = new WeakReference<DotsPatternActivity>(dotsPatternActivity);
     }
 
     @Override

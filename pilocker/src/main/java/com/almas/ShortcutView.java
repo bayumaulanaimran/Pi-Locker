@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.pilockerstable.LockerService;
 import com.pilockerstable.PinActivity;
-import com.pilockerstable.RandomizedDotPattern;
+import com.pilockerstable.DotsPatternActivity;
 
 public class ShortcutView extends LinearLayout {
 	private int CAPACITY = 4;
@@ -98,7 +98,7 @@ public class ShortcutView extends LinearLayout {
 						x.putExtra("sv", sv);
 						context.startActivity(x);
 					}else if(!hashedDots.equals("")&&pin.equals("")){
-						x = new Intent(getContext(), RandomizedDotPattern.class);
+						x = new Intent(getContext(), DotsPatternActivity.class);
 
 						x.putExtra("sv", sv);
 						context.startActivity(x);

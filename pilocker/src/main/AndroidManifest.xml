@@ -81,7 +81,7 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
         <activity
-            android:name=".RandomizedDotPattern"
+            android:name=".DotsPatternActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
@@ -90,7 +90,7 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
         <activity
-            android:name=".SetRandomizedDotPattern"
+            android:name=".SetDotsPatternActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
